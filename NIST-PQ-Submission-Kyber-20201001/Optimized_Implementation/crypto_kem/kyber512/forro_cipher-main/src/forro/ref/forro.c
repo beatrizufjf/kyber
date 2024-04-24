@@ -165,26 +165,26 @@ void forro_keystream_bytes(stream_ctx *x, uint8_t *stream, uint32_t bytes)
     forro_encrypt_bytes(x, stream, stream, bytes);
 }
 
-void forro_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t nonce)
+void forro_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t * expnonce)
 {
     stream_ctx ctx;
     forro_keysetup(&ctx, (uint8_t *)key);
     // forro_keysetup(stream_ctx *x, uint8_t *key);
     uint8_t iv[16] = { 0 };
-    iv[0] = nonce;
+    iv[0] = expnonce[0];
     forro_ivsetup(&ctx, iv);
     // forro_ivsetup(str\eam_ctx *x, uint8_t *iv);
 
     forro_keystream_bytes(&ctx, out, (uint32_t)outlen);
 }
 
-void forro_absorb(stream_ctx *ctx, uint8_t *seed, uint8_t x, uint8_t y)
+void forro_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce)
 {
     forro_keysetup_xor(ctx, (uint8_t *)seed);
     // forro_keysetup(stream_ctx *x, uint8_t *key);
     uint8_t iv[16] = { 0 };
-    iv[0] = x;
-    iv[1] = y;
+    iv[0] = expnonce[0];
+    iv[1] = expnonce[1];
     forro_ivsetup_xor(ctx, iv);
     // forro_ivsetup(str\eam_ctx *x, uint8_t *iv);
     forro_qr(ctx->state);

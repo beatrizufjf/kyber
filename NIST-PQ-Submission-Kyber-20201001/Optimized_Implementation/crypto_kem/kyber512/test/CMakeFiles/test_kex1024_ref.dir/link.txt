@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/test_kex1024_ref.dir/test_kex.o CMakeFiles/test_kex1024_ref.dir/randombytes.o -o test_kex1024_ref  libkyber1024_ref.a 

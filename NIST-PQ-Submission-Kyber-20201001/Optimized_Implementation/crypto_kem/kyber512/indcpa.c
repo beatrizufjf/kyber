@@ -176,6 +176,7 @@ static unsigned int rej_uniform(int16_t *r,
 // Not static for benchmarking
 void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
 {
+  printf("GEN_MATRIX_NBLOCKS: %d\n", GEN_MATRIX_NBLOCKS);
   unsigned int ctr, i, j, k;
   unsigned int buflen, off;
   uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
@@ -228,6 +229,7 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
   randombytes(buf, KYBER_SYMBYTES);
   hash_g(buf, buf, KYBER_SYMBYTES);
 
+  printf("publicseed: %02x %02x %02x\n", publicseed[0], publicseed[1], publicseed[2]);
   gen_a(a, publicseed);
 
   for(i=0;i<KYBER_K;i++)
@@ -281,7 +283,11 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
 
   unpack_pk(&pkpv, seed, pk);
   poly_frommsg(&k, m);
+  printf("seed: %02x %02x %02x\n", seed[0], seed[1], seed[2]);
   gen_at(at, seed);
+  for(int j = 0; j < KYBER_N; j++)
+    printf("%04x ", at[0].vec[0].coeffs[j]);
+  printf("\n");
 
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(sp.vec+i, coins, nonce++);

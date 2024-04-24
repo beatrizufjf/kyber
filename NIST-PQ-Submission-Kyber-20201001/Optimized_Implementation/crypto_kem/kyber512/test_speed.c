@@ -30,6 +30,17 @@ int main()
   polyvec matrix[KYBER_K];
   poly ap;
 
+  printf("\n\n ------ Parameters ------ \n\n");
+  printf("Using KYBER_K = %d\n", KYBER_K);
+  #ifdef KYBER_90S
+  printf("Using Kyber with AES\n");
+  #elif KYBER_FORRO
+  printf("Using Kyber with Forro\n");
+  #else
+  printf("Using Kyber with SHAKE\n");
+  #endif
+  printf("\n ------------------------- \n\n");
+
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
     gen_matrix(matrix, seed, 0);

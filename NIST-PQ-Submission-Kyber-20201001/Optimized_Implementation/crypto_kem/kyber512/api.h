@@ -11,18 +11,24 @@
 #if   (KYBER_K == 2)
 #ifdef KYBER_90S
 #define CRYPTO_ALGNAME "Kyber512-90s"
+#elif KYBER_FORRO
+#define CRYPTO_ALGNAME "Kyber512-forro"
 #else
 #define CRYPTO_ALGNAME "Kyber512"
 #endif
 #elif (KYBER_K == 3)
 #ifdef KYBER_90S
 #define CRYPTO_ALGNAME "Kyber768-90s"
+#elif KYBER_FORRO
+#define CRYPTO_ALGNAME "Kyber768-forro"
 #else
 #define CRYPTO_ALGNAME "Kyber768"
 #endif
 #elif (KYBER_K == 4)
 #ifdef KYBER_90S
 #define CRYPTO_ALGNAME "Kyber1024-90s"
+#elif KYBER_FORRO
+#define CRYPTO_ALGNAME "Kyber1024-forro"
 #else
 #define CRYPTO_ALGNAME "Kyber1024"
 #endif

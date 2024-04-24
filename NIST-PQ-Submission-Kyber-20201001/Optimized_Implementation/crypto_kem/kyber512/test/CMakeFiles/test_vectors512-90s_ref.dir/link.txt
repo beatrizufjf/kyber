@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/test_vectors512-90s_ref.dir/test_vectors.o -o test_vectors512-90s_ref  libkyber512_90s_ref.a 

@@ -29,6 +29,8 @@ int main()
   polyvec matrix[KYBER_K];
   poly ap;
 
+  printf("Teste!!!!!!!!\n");
+
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
     gen_matrix(matrix, seed, 0);

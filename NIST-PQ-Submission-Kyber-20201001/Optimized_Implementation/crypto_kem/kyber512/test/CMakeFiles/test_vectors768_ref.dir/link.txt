@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/test_vectors768_ref.dir/test_vectors.o -o test_vectors768_ref  libkyber768_ref.a 

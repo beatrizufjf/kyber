@@ -1,0 +1,2 @@
+/usr/bin/ar qc libaes256ctr_ref.a CMakeFiles/aes256ctr_ref.dir/aes256ctr.o
+/usr/bin/ranlib libaes256ctr_ref.a

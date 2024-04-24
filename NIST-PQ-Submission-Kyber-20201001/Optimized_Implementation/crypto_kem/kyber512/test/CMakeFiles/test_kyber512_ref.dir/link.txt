@@ -1,0 +1,1 @@
+/usr/bin/cc -rdynamic CMakeFiles/test_kyber512_ref.dir/test_kyber.o CMakeFiles/test_kyber512_ref.dir/randombytes.o -o test_kyber512_ref  libkyber512_ref.a 

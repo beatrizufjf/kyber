@@ -35,6 +35,17 @@ main()
     unsigned char       pk[CRYPTO_PUBLICKEYBYTES], sk[CRYPTO_SECRETKEYBYTES];
     int                 ret_val;
 
+    printf("\n\n ------ Parameters ------ \n\n");
+    printf("Using KYBER_K = %d\n", KYBER_K);
+    #ifdef KYBER_90S
+    printf("Using Kyber with AES\n");
+    #elif KYBER_FORRO
+    printf("Using Kyber with Forro\n");
+    #else
+    printf("Using Kyber with SHAKE\n");
+    #endif
+    printf("\n ------------------------- \n\n");
+
     // Create the REQUEST file
     sprintf(fn_req, "PQCkemKAT_%d.req", CRYPTO_SECRETKEYBYTES);
     if ( (fp_req = fopen(fn_req, "w")) == NULL ) {

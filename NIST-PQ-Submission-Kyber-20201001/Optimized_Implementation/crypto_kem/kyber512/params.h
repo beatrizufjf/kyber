@@ -1,9 +1,9 @@
 #ifndef PARAMS_H
 #define PARAMS_H
 
-#ifndef KYBER_K
-#define KYBER_K 2	/* Change this for different security strengths */
-#endif
+// #ifndef KYBER_K
+// #define KYBER_K 2	/* Change this for different security strengths */
+// #endif
 
 //#define KYBER_90S	/* Uncomment this if you want the 90S variant */
 
@@ -11,18 +11,24 @@
 #if   (KYBER_K == 2)
 #ifdef KYBER_90S
 #define KYBER_NAMESPACE(s) pqcrystals_kyber512_90s_ref##s
+#elif KYBER_FORRO
+#define KYBER_NAMESPACE(s) pqcrystals_kyber512_forro_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber512_ref##s
 #endif
 #elif (KYBER_K == 3)
 #ifdef KYBER_90S
 #define KYBER_NAMESPACE(s) pqcrystals_kyber768_90s_ref##s
+#elif KYBER_FORRO
+#define KYBER_NAMESPACE(s) pqcrystals_kyber768_forro_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber768_ref##s
 #endif
 #elif (KYBER_K == 4)
 #ifdef KYBER_90S
 #define KYBER_NAMESPACE(s) pqcrystals_kyber1024_90s_ref##s
+#elif KYBER_FORRO
+#define KYBER_NAMESPACE(s) pqcrystals_kyber1024_forro_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber1024_ref##s
 #endif

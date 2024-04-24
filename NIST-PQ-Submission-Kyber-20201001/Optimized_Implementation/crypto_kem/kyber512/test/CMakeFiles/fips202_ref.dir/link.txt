@@ -1,0 +1,2 @@
+/usr/bin/ar qc libfips202_ref.a CMakeFiles/fips202_ref.dir/fips202.o
+/usr/bin/ranlib libfips202_ref.a
