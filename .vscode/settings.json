@@ -1,7 +1,8 @@
 {
     "files.associations": {
         "randombytes.h": "c",
-        "forro.h": "c"
+        "forro.h": "c",
+        "fips202.h": "c"
     },
     "C_Cpp.errorSquiggles": "disabled"
 }

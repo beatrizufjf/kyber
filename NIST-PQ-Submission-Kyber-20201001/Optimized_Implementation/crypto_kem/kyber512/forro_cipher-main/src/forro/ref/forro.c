@@ -160,8 +160,8 @@ void forro_decrypt_bytes(stream_ctx *x, const uint8_t *c, uint8_t *m, uint32_t b
 void forro_keystream_bytes(stream_ctx *x, uint8_t *stream, uint32_t bytes)
 {
     uint32_t i;
-    for (i = 0; i < bytes; ++i)
-        stream[i] = 0;
+    // for (i = 0; i < bytes; ++i)
+    //     stream[i] = 0;
     forro_encrypt_bytes(x, stream, stream, bytes);
 }
 
@@ -190,7 +190,8 @@ void forro_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce)
     forro_qr(ctx->state);
 }
 
-void forro_squeeze(uint8_t *out, size_t outlen, stream_ctx *ctx)
+void forro_squeeze(uint8_t *out, size_t nblocks, stream_ctx *ctx)
 {
-    forro_keystream_bytes(ctx, out, (uint32_t)outlen);
+    uint32_t outbytes = nblocks * FORRO_SIZE_BLOCK;
+    forro_keystream_bytes(ctx, out, outbytes);
 }

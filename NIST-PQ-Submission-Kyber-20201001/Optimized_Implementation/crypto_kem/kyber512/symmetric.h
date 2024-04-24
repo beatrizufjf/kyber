@@ -60,7 +60,7 @@ void kyber_forro_prf(uint8_t *out,
                          const uint8_t key[KYBER_SYMBYTES],
                          uint8_t nonce);
 
-#define XOF_BLOCKBYTES 64 //Lagrota ajustar - valor do AES
+#define XOF_BLOCKBYTES FORRO_SIZE_BLOCK //Lagrota ajustar - valor do AES
 
 #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)

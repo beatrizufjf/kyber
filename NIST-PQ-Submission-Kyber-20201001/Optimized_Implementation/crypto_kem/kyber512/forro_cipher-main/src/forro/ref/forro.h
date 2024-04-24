@@ -8,6 +8,8 @@
 #define U32TO8_LITTLE(p, v) (((uint32_t *)(p))[0] = v)
 #define U8TO32_LITTLE(p) (((uint32_t *)(p))[0])
 
+#define FORRO_SIZE_BLOCK 64 //bytes
+
 static const uint8_t SIGMA[16] = "voltadaasabranca";
 typedef struct
 {
@@ -26,4 +28,4 @@ void forro_keystream_bytes(stream_ctx *x, uint8_t *stream, uint32_t bytes);
 
 void forro_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t * expnonce);
 void forro_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce);
-void forro_squeeze(uint8_t *out, size_t outlen, stream_ctx *ctx);
+void forro_squeeze(uint8_t *out, size_t nblocks, stream_ctx *ctx);

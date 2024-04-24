@@ -180,8 +180,9 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
   unsigned int ctr, i, j, k;
   unsigned int buflen, off;
   uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
-  xof_state state;
+  xof_state state = { 0x0 };
 
+  printf("seed: %02x %02x %02x\n", seed[0], seed[1], seed[2]);  
   for(i=0;i<KYBER_K;i++) {
     for(j=0;j<KYBER_K;j++) {
       if(transposed)
@@ -189,6 +190,15 @@ void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
       else
         xof_absorb(&state, seed, j, i);
 
+      printf("State (%d): ", transposed);
+      for(int i = 0; i < 16; i++)
+      {
+#if KYBER_FORRO
+        printf("%08x ", state.state[i]);
+#endif
+      }
+      printf("\n");
+      
       xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
       buflen = GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES;
       ctr = rej_uniform(a[i].vec[j].coeffs, KYBER_N, buf, buflen);
@@ -231,6 +241,9 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
 
   printf("publicseed: %02x %02x %02x\n", publicseed[0], publicseed[1], publicseed[2]);
   gen_a(a, publicseed);
+  for(int j = 0; j < KYBER_N; j++)
+    printf("%04x ", a[0].vec[0].coeffs[j]);
+  printf("\n");
 
   for(i=0;i<KYBER_K;i++)
     poly_getnoise_eta1(&skpv.vec[i], noiseseed, nonce++);
