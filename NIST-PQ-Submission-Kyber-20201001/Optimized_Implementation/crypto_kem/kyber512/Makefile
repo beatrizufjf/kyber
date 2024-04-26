@@ -76,10 +76,10 @@ ifeq ($(SEC_K), 2)
 	CFLAGS += $(SEC_K2_FLAGS)
 endif
 ifeq ($(SEC_K), 3)
-	CFLAGS += $(SEC_K2_FLAGS)
+	CFLAGS += $(SEC_K3_FLAGS)
 endif
 ifeq ($(SEC_K), 4)
-	CFLAGS += $(SEC_K2_FLAGS)
+	CFLAGS += $(SEC_K4_FLAGS)
 endif
 
 # Regra de compilação
