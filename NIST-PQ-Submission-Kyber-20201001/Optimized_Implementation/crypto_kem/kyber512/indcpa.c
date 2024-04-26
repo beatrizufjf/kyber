@@ -7,6 +7,7 @@
 #include "rng.h"
 #include "ntt.h"
 #include "symmetric.h"
+#include <string.h>
 
 /*************************************************
 * Name:        pack_pk
@@ -176,32 +177,62 @@ static unsigned int rej_uniform(int16_t *r,
 // Not static for benchmarking
 void gen_matrix(polyvec *a, const uint8_t seed[KYBER_SYMBYTES], int transposed)
 {
-  printf("GEN_MATRIX_NBLOCKS: %d\n", GEN_MATRIX_NBLOCKS);
+  printf("-------- GEN_MATRIX_NBLOCKS: %d | XOF_BLOCKBYTES: %d | buflen: %d ------------\n", GEN_MATRIX_NBLOCKS, XOF_BLOCKBYTES, GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2);
   unsigned int ctr, i, j, k;
   unsigned int buflen, off;
-  uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2];
+  uint8_t buf[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2] = { 0x0 };
   xof_state state = { 0x0 };
 
   printf("seed: %02x %02x %02x\n", seed[0], seed[1], seed[2]);  
   for(i=0;i<KYBER_K;i++) {
     for(j=0;j<KYBER_K;j++) {
+
+      //TODO: nao pode fazer isso, dar um jeito de retirar essa diretiva!
+      memset(buf, 0x0, GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2);
+
+      printf("Pre-state (%d): ", transposed);
+      for(int n = 0; n < 16; n++)
+      {
+#if KYBER_FORRO
+        printf("%08x ", state.state[n]);
+#endif
+      }
+      printf("\n");
+
       if(transposed)
         xof_absorb(&state, seed, i, j);
       else
         xof_absorb(&state, seed, j, i);
 
-      printf("State (%d): ", transposed);
-      for(int i = 0; i < 16; i++)
+      printf("Pos-state (%d): ", transposed);
+      for(int n = 0; n < 16; n++)
       {
 #if KYBER_FORRO
-        printf("%08x ", state.state[i]);
+        printf("%08x ", state.state[n]);
 #endif
+      }
+      printf("\n");
+
+      printf("Out pre-squeeze:\n");
+      for(int n = 0; n < GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2; n++)
+      {
+        printf("%02x ", buf[n]);
       }
       printf("\n");
       
       xof_squeezeblocks(buf, GEN_MATRIX_NBLOCKS, &state);
+
+      printf("Out pos-squeeze:\n");
+      for(int n = 0; n < GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2; n++)
+      {
+        printf("%02x ", buf[n]);
+      }
+      printf("\n");
+
       buflen = GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES;
+      printf("buflen: %d\n", buflen);
       ctr = rej_uniform(a[i].vec[j].coeffs, KYBER_N, buf, buflen);
+      printf("ctr: %d\n", ctr);
 
       while(ctr < KYBER_N) {
         off = buflen % 3;
@@ -241,8 +272,16 @@ void indcpa_keypair(uint8_t pk[KYBER_INDCPA_PUBLICKEYBYTES],
 
   printf("publicseed: %02x %02x %02x\n", publicseed[0], publicseed[1], publicseed[2]);
   gen_a(a, publicseed);
-  for(int j = 0; j < KYBER_N; j++)
-    printf("%04x ", a[0].vec[0].coeffs[j]);
+
+  printf("Matrix A (partial):");
+  for(int k = 0; k < KYBER_K; k++)
+    for(int i = 0; i < KYBER_K; i++)
+      for(int j = 0; j < KYBER_N; j++)
+      {
+        if(j == 0)
+          printf("\n\n");
+        printf("%04x ", a[k].vec[i].coeffs[j]);
+      }
   printf("\n");
 
   for(i=0;i<KYBER_K;i++)
@@ -298,8 +337,15 @@ void indcpa_enc(uint8_t c[KYBER_INDCPA_BYTES],
   poly_frommsg(&k, m);
   printf("seed: %02x %02x %02x\n", seed[0], seed[1], seed[2]);
   gen_at(at, seed);
-  for(int j = 0; j < KYBER_N; j++)
-    printf("%04x ", at[0].vec[0].coeffs[j]);
+  printf("Matrix AT (partial):");
+  for(int n = 0; n < KYBER_K; n++)
+    for(int m = 0; m < KYBER_K; m++)
+      for(int j = 0; j < KYBER_N; j++)
+      {
+        if(j == 0)
+          printf("\n\n");
+        printf("%04x ", at[n].vec[m].coeffs[j]);
+      }
   printf("\n");
 
   for(i=0;i<KYBER_K;i++)

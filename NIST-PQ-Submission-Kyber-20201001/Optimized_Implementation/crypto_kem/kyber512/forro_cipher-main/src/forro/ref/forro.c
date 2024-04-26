@@ -44,12 +44,12 @@ inline void forro(uint8_t out[64], const uint32_t init[16])
 
 inline void forro_qr(uint32_t state_vector[16])
 {
-    uint32_t init[16];
+    // uint32_t init[16];
     int i;
-    for (i = 0; i < 16; i++)
-    {
-        init[i] = state_vector[i];
-    }
+    // for (i = 0; i < 16; i++)
+    // {
+    //     init[i] = state_vector[i];
+    // }
 
     for (i = 0; i < rounds; i++)
     {
@@ -63,10 +63,10 @@ inline void forro_qr(uint32_t state_vector[16])
         Q(state_vector[3], state_vector[4], state_vector[9], state_vector[14], state_vector[2]);
     }
 
-    for (i = 0; i < 16; i++)
-    {
-        state_vector[i] = init[i] + state_vector[i];
-    }
+    // for (i = 0; i < 16; i++)
+    // {
+    //     state_vector[i] = init[i] + state_vector[i];
+    // }
 
     return;
 }
@@ -174,24 +174,42 @@ void forro_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], u
     iv[0] = expnonce[0];
     forro_ivsetup(&ctx, iv);
     // forro_ivsetup(str\eam_ctx *x, uint8_t *iv);
-
     forro_keystream_bytes(&ctx, out, (uint32_t)outlen);
 }
 
 void forro_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce)
 {
-    forro_keysetup_xor(ctx, (uint8_t *)seed);
+    printf("[forro] Absorb!\n");
+    forro_keysetup(ctx, (uint8_t *)seed);
     // forro_keysetup(stream_ctx *x, uint8_t *key);
     uint8_t iv[16] = { 0 };
     iv[0] = expnonce[0];
     iv[1] = expnonce[1];
-    forro_ivsetup_xor(ctx, iv);
+    printf("[forro] iv: %02x %02x\n", iv[0], iv[1]);
+
+    forro_ivsetup(ctx, iv);
     // forro_ivsetup(str\eam_ctx *x, uint8_t *iv);
     forro_qr(ctx->state);
 }
 
 void forro_squeeze(uint8_t *out, size_t nblocks, stream_ctx *ctx)
 {
+    printf("[forro] Squeeze! nblocks: %d\n", nblocks);
+    printf("[forro] Checking state:\n");
+    for(int i = 0; i < 16; i++)
+    {
+        printf("%08x ", ctx->state[i]);
+    }
+    printf("\n");
     uint32_t outbytes = nblocks * FORRO_SIZE_BLOCK;
+    printf("[forro] Checking state:\n");
     forro_keystream_bytes(ctx, out, outbytes);
+
+    printf("[forro] Generating %d bytes\n", outbytes);
+    for(int i = 0; i < outbytes; i++)
+    {
+    printf("%02x ", out[i]);
+    }
+    printf("\n");
+
 }

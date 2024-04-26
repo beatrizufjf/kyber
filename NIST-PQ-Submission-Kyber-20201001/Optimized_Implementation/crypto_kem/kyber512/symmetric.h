@@ -43,16 +43,43 @@ void kyber_aes256ctr_prf(uint8_t *out,
 
 #elif KYBER_FORRO
 
+// #define USE_SHAKE
+
 #include "forro_cipher-main/src/forro/ref/forro.h"
 #include "fips202.h"
 
-typedef stream_ctx xof_state;
+#ifdef USE_SHAKE
 
-#define kyber_forroxof_absorb KYBER_NAMESPACE(_kyber_forroxof_absorb)
-void kyber_forroxof_absorb(stream_ctx *state,
-                            const uint8_t seed[KYBER_SYMBYTES],
-                            uint8_t x,
-                            uint8_t y);
+        typedef keccak_state xof_state;
+        #define kyber_shake128_absorb KYBER_NAMESPACE(_kyber_shake128_absorb)
+        void kyber_shake128_absorb(keccak_state *s,
+                                const uint8_t seed[KYBER_SYMBYTES],
+                                uint8_t x,
+                                uint8_t y);
+
+        #define XOF_BLOCKBYTES SHAKE128_RATE
+
+        #define xof_absorb(STATE, SEED, X, Y) \
+                kyber_shake128_absorb(STATE, SEED, X, Y)
+        #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) \
+                shake128_squeezeblocks(OUT, OUTBLOCKS, STATE)
+
+#else
+        typedef stream_ctx xof_state;
+        #define kyber_forroxof_absorb KYBER_NAMESPACE(_kyber_forroxof_absorb)
+        void kyber_forroxof_absorb(stream_ctx *state,
+                                const uint8_t seed[KYBER_SYMBYTES],
+                                uint8_t x,
+                                uint8_t y);
+
+        #define XOF_BLOCKBYTES FORRO_SIZE_BLOCK //Lagrota ajustar - valor do AES
+
+        #define xof_absorb(STATE, SEED, X, Y) \
+                kyber_forroxof_absorb(STATE, SEED, X, Y)
+        #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) \
+                forro_squeeze(OUT, OUTBLOCKS, STATE)        
+
+#endif
 
 #define kyber_forro_prf KYBER_NAMESPACE(_kyber_forro_prf)
 void kyber_forro_prf(uint8_t *out,
@@ -60,14 +87,9 @@ void kyber_forro_prf(uint8_t *out,
                          const uint8_t key[KYBER_SYMBYTES],
                          uint8_t nonce);
 
-#define XOF_BLOCKBYTES FORRO_SIZE_BLOCK //Lagrota ajustar - valor do AES
 
 #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
-#define xof_absorb(STATE, SEED, X, Y) \
-        kyber_forroxof_absorb(STATE, SEED, X, Y)
-#define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) \
-        forro_squeeze(OUT, OUTBLOCKS, STATE)        
 #define prf(OUT, OUTBYTES, KEY, NONCE) \
         kyber_forro_prf(OUT, OUTBYTES, KEY, NONCE)
 #define kdf(OUT, IN, INBYTES) \
