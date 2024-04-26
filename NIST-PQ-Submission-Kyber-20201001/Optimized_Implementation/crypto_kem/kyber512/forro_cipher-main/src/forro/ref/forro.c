@@ -201,19 +201,21 @@ void forro_squeeze(uint8_t *out, size_t outbytes, stream_ctx *ctx)
 void forro_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen)
 {
     stream_ctx ctx = { 0x0 };
-    uint8_t iv[16] = { 0 };
+    uint32_t iv[2] = { 0x0 };
     size_t ctr = 0;
 
     while(inlen >= 32)
     {
         forro_keysetup_xor(&ctx, in);
-        forro_ivsetup_xor(&ctx, iv);
+        forro_ivsetup_xor(&ctx, (uint8_t *)iv);
 
         in += 32;
         inlen -= 32;
+
+        //fazer em 32 bits!
         iv[0]++;
         if(!iv[0])
-            iv[1]++;
+            iv[2]++;
     }
 
     if(inlen)
@@ -223,7 +225,7 @@ void forro_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen)
             key_rem[i] = in[i];
 
         forro_keysetup_xor(&ctx, key_rem);
-        forro_ivsetup_xor(&ctx, iv);
+        forro_ivsetup_xor(&ctx, (uint8_t *)iv);
     }
  
     forro_generate_bytes(&ctx, out, outlen);   
