@@ -64,14 +64,14 @@ void kyber_forro_prf(uint8_t *out,
 #define xof_absorb(STATE, SEED, X, Y) \
         kyber_forroxof_absorb(STATE, SEED, X, Y)
 #define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) \
-        forro_squeeze(OUT, OUTBLOCKS, STATE)        
+        forro_squeeze(OUT, OUTBLOCKS * FORRO_SIZE_BLOCK, STATE)        
 
 #define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
 #define prf(OUT, OUTBYTES, KEY, NONCE) \
         kyber_forro_prf(OUT, OUTBYTES, KEY, NONCE)
-#define kdf(OUT, IN, INBYTES) \
-        shake256(OUT, KYBER_SSBYTES, IN, INBYTES) //Lagrota colocar o kdf como Forro tb
+// #define kdf(OUT, IN, INBYTES) forro_kdf(OUT, KYBER_SSBYTES, IN, INBYTES) //Lagrota colocar o kdf como Forro tb
+#define kdf(OUT, IN, INBYTES) forro_kdf(OUT, KYBER_SSBYTES, IN, INBYTES)
 
 #else
 

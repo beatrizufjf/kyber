@@ -30,3 +30,4 @@ void forro_generate_bytes(stream_ctx *x, uint8_t *c, uint32_t bytes);
 void forro_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t * expnonce);
 void forro_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce);
 void forro_squeeze(uint8_t *out, size_t nblocks, stream_ctx *ctx);
+void forro_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen);
