@@ -70,10 +70,7 @@ int crypto_kem_enc(unsigned char *ct,
   hash_h(kr+KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES);
   /* hash concatenation of pre-k and H(c) to k */
   kdf(ss, kr, 2*KYBER_SYMBYTES);
-  printf("ss enc: ");
-  for(int n = 0; n < 32; n++)
-    printf("%02x", ss[n]);
-  printf("\n");
+
   return 0;
 }
 
@@ -117,7 +114,6 @@ int crypto_kem_dec(unsigned char *ss,
   indcpa_enc(cmp, buf, pk, kr+KYBER_SYMBYTES);
 
   fail = verify(ct, cmp, KYBER_CIPHERTEXTBYTES);
-  printf("Failed if 1, success otherwise: %d\n", fail);
 
   /* overwrite coins in kr with H(c) */
   hash_h(kr+KYBER_SYMBYTES, ct, KYBER_CIPHERTEXTBYTES);
@@ -127,10 +123,6 @@ int crypto_kem_dec(unsigned char *ss,
 
   /* hash concatenation of pre-k and H(c) to k */
   kdf(ss, kr, 2*KYBER_SYMBYTES);
-  printf("ss dec: ");
-  for(int n = 0; n < 32; n++)
-    printf("%02x", ss[n]);
-  printf("\n");
 
   return 0;
 }
