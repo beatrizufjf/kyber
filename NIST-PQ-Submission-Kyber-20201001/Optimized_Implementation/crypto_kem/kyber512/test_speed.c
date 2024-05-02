@@ -12,20 +12,13 @@
 #include "speed_print.h"
 #include <time.h>
 #include <unistd.h>
-// 
-#define NTESTS 20000
 
+#define NTESTS 10000
 
 uint64_t t[NTESTS];
 uint8_t seed[KYBER_SYMBYTES] = {0};
 int main()
 {
-    time_t start_time = time(NULL);
-    time_t current_time = start_time;
-    time_t duration = 30; // 30 segundos
-
-    while (current_time - start_time < duration)
-    {
   unsigned int i;
   unsigned char pk[CRYPTO_PUBLICKEYBYTES] = {0};
   unsigned char sk[CRYPTO_SECRETKEYBYTES] = {0};
@@ -37,14 +30,19 @@ int main()
   polyvec matrix[KYBER_K];
   poly ap;
 
+  char * filename = (char *)calloc(64, sizeof(char));
+
   printf("\n\n ------ Parameters ------ \n\n");
   printf("Using KYBER_K = %d\n", KYBER_K);
   #ifdef KYBER_90S
   printf("Using Kyber with AES\n");
+  sprintf(filename, "results/RESULTS_AES-K%d-", KYBER_K);
   #elif KYBER_FORRO
   printf("Using Kyber with Forro\n");
+  sprintf(filename, "results/RESULTS_FORRO-K%d-", KYBER_K);
   #else
   printf("Using Kyber with SHAKE\n");
+  sprintf(filename, "results/RESULTS_SHAKE-K%d-", KYBER_K);
   #endif
   printf("\n ------------------------- \n\n");
 
@@ -52,7 +50,7 @@ int main()
     t[i] = cpucycles();
     gen_matrix(matrix, seed, 0);
   }
-    print_results("gen_a: ", t, NTESTS);
+    print_results_with_csv("gen_a: ", t, NTESTS, filename);
 
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
@@ -82,19 +80,19 @@ int main()
     t[i] = cpucycles();
     crypto_kem_keypair(pk, sk);
   }
-    print_results("kyber_keypair: ", t, NTESTS);
+    print_results_with_csv("kyber_keypair: ", t, NTESTS, filename);
 
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
     crypto_kem_enc(ct, key, pk);
   }
-    print_results("kyber_encaps: ", t, NTESTS);
+    print_results_with_csv("kyber_encaps: ", t, NTESTS, filename);
 
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
     crypto_kem_dec(key, ct, sk);
   }
-    print_results("kyber_decaps: ", t, NTESTS);
+    print_results_with_csv("kyber_decaps: ", t, NTESTS, filename);
 /* 
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();
@@ -132,7 +130,7 @@ int main()
   }
   print_results("kex_ake_sharedA: ", t, NTESTS);
 */
+
+  free(filename);
   return 0;
 }
-}
-

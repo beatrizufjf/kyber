@@ -5,5 +5,6 @@
 #include <stdint.h>
 
 void print_results(const char *s, uint64_t *t, size_t tlen);
+void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char *filename);
 
 #endif

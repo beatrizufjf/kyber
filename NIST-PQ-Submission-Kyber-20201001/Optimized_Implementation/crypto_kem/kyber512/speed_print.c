@@ -2,6 +2,7 @@
 #include <stdint.h>
 #include <stdlib.h>
 #include <stdio.h>
+#include <string.h>
 #include "cpucycles.h"
 #include "speed_print.h"
 
@@ -48,4 +49,58 @@ void print_results(const char *s, uint64_t *t, size_t tlen) {
   printf("median: %llu cycles/ticks\n", (unsigned long long)median(t, tlen));
   printf("average: %llu cycles/ticks\n", (unsigned long long)average(t, tlen));
   printf("\n");
+}
+
+void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char *filename) {
+  size_t i;
+  static uint64_t overhead = -1;
+  char * filename_tmp = (char *)calloc(64, sizeof(char));
+  memcpy(filename_tmp, filename, strlen(filename));
+
+  if(tlen < 2) {
+    fprintf(stderr, "ERROR: Need a least two cycle counts!\n");
+    return;
+  }
+
+  if(overhead  == (uint64_t)-1)
+    overhead = cpucycles_overhead();
+
+  tlen--;
+  for(i=0;i<tlen;++i)
+    t[i] = t[i+1] - t[i] - overhead;
+
+  uint64_t u64_median = median(t, tlen);
+  uint64_t u64_average = average(t, tlen);
+
+  printf("%s\n", s);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average);
+  printf("\n");
+
+  //Concatenate to form file name
+  strcat(filename_tmp, s);
+  size_t len = strlen(filename_tmp);
+  filename_tmp[len-2] = 0x0;
+  strcat(filename_tmp, ".csv");
+
+  //Open file
+  FILE *fpt;
+  fpt = fopen(filename_tmp, "a+");
+  if (NULL != fpt) 
+  {
+    fseek (fpt, 0, SEEK_END);
+    size_t size = ftell(fpt);
+
+    if (0 == size) {
+        printf("File is empty, printing header...\n");
+        fprintf(fpt, "median,average\n");
+    }
+    else 
+    {
+        printf("File is not empty, appending...\n");
+    }
+  }
+  fprintf(fpt, "%llu,%llu\n", (unsigned long long)u64_median, (unsigned long long)u64_average);
+  fclose(fpt);
+  free(filename_tmp);
 }
