@@ -10,15 +10,22 @@
 #include "polyvec.h"
 #include "cpucycles.h"
 #include "speed_print.h"
+#include <time.h>
+#include <unistd.h>
 
-#define NTESTS 10000
+#define NTESTS 20000
 
 
 uint64_t t[NTESTS];
 uint8_t seed[KYBER_SYMBYTES] = {0};
-
 int main()
 {
+    time_t start_time = time(NULL);
+    time_t current_time = start_time;
+    time_t duration = 30; // 30 segundos
+
+    while (current_time - start_time < duration)
+    {
   unsigned int i;
   unsigned char pk[CRYPTO_PUBLICKEYBYTES] = {0};
   unsigned char sk[CRYPTO_SECRETKEYBYTES] = {0};
@@ -127,3 +134,5 @@ int main()
 */
   return 0;
 }
+}
+

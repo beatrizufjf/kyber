@@ -114,6 +114,7 @@ inline void forro_encrypt_bytes(stream_ctx *x, const uint8_t *m, uint8_t *c, uin
     for (;;)
     {
         forro(output, x->state);
+        //Gera uma saída criptografada para o bloco atual de dados de entrada
         x->state[4] = x->state[4] + 1;
         if (!x->state[4])
         {
