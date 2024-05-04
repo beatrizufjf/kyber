@@ -13,6 +13,8 @@
 #define KYBER_NAMESPACE(s) pqcrystals_kyber512_90s_ref##s
 #elif KYBER_FORRO
 #define KYBER_NAMESPACE(s) pqcrystals_kyber512_forro_ref##s
+#elif KYBER_XOTE
+#define KYBER_NAMESPACE(s) pqcrystals_kyber512_xote_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber512_ref##s
 #endif
@@ -21,6 +23,8 @@
 #define KYBER_NAMESPACE(s) pqcrystals_kyber768_90s_ref##s
 #elif KYBER_FORRO
 #define KYBER_NAMESPACE(s) pqcrystals_kyber768_forro_ref##s
+#elif KYBER_XOTE
+#define KYBER_NAMESPACE(s) pqcrystals_kyber768_xote_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber768_ref##s
 #endif
@@ -29,6 +33,8 @@
 #define KYBER_NAMESPACE(s) pqcrystals_kyber1024_90s_ref##s
 #elif KYBER_FORRO
 #define KYBER_NAMESPACE(s) pqcrystals_kyber1024_forro_ref##s
+#elif KYBER_XOTE
+#define KYBER_NAMESPACE(s) pqcrystals_kyber1024_xote_ref##s
 #else
 #define KYBER_NAMESPACE(s) pqcrystals_kyber1024_ref##s
 #endif

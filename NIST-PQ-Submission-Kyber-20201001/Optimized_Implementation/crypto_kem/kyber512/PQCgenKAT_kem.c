@@ -41,6 +41,8 @@ main()
     printf("Using Kyber with AES\n");
     #elif KYBER_FORRO
     printf("Using Kyber with Forro\n");
+    #elif KYBER_XOTE
+    printf("Using Kyber with Xote\n");
     #else
     printf("Using Kyber with SHAKE\n");
     #endif
@@ -126,6 +128,8 @@ main()
         }
 
     } while ( !done );
+
+    printf("KAT success\n");
 
     fclose(fp_req);
     fclose(fp_rsp);

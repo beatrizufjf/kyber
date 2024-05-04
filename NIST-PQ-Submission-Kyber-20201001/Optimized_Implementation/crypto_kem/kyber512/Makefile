@@ -40,11 +40,11 @@ COMMON_SOURCES = $(wildcard $(SRC_DIR)/*.c)
 COMMON_HEADERS = $(wildcard $(SRC_DIR)/*.h)
 
 # Arquivo de teste
-SOURCES= cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c PQCgenKAT_kem.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c symmetric-forro.c forro_cipher-main/src/forro/ref/forro.c
-HEADERS= api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h aes256ctr.h sha2.h forro_cipher-main/src/forro/ref/forro.h
+SOURCES= cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c PQCgenKAT_kem.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
+HEADERS= api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h aes256ctr.h sha2.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.c
 
-TEST_SOURCE = cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c test_speed.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c speed_print.c cpucycles.c symmetric-forro.c forro_cipher-main/src/forro/ref/forro.c
-TEST_HEADER = api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h
+TEST_SOURCE = cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c test_speed.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c speed_print.c cpucycles.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
+TEST_HEADER = api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.h
 
 # Executável de teste
 TEST_SPEED = test_speed
@@ -53,6 +53,7 @@ TEST_SPEED = test_speed
 SHAKE_FLAGS = -DKYBER_SHAKE
 AES_FLAGS = -DKYBER_90S
 FORRO_FLAGS = -DKYBER_FORRO
+XOTE_FLAGS = -DKYBER_XOTE
 
 SEC_K2_FLAGS = -DKYBER_K=2
 SEC_K3_FLAGS = -DKYBER_K=3
@@ -70,6 +71,9 @@ ifeq ($(IMPLEMENTATION), AES)
 endif
 ifeq ($(IMPLEMENTATION), FORRO)
     CFLAGS += $(FORRO_FLAGS)
+endif
+ifeq ($(IMPLEMENTATION), XOTE)
+    CFLAGS += $(XOTE_FLAGS)
 endif
 
 ifeq ($(SEC_K), 2)

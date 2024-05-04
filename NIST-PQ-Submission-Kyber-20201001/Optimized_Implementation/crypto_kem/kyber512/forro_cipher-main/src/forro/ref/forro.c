@@ -216,7 +216,7 @@ void forro_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen)
         //fazer em 32 bits!
         iv[0]++;
         if(!iv[0])
-            iv[2]++;
+            iv[1]++;
     }
 
     if(inlen)

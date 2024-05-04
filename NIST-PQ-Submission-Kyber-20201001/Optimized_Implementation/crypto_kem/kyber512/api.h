@@ -13,6 +13,8 @@
 #define CRYPTO_ALGNAME "Kyber512-90s"
 #elif KYBER_FORRO
 #define CRYPTO_ALGNAME "Kyber512-forro"
+#elif KYBER_XOTE
+#define CRYPTO_ALGNAME "Kyber512-xote"
 #else
 #define CRYPTO_ALGNAME "Kyber512"
 #endif
@@ -21,6 +23,8 @@
 #define CRYPTO_ALGNAME "Kyber768-90s"
 #elif KYBER_FORRO
 #define CRYPTO_ALGNAME "Kyber768-forro"
+#elif KYBER_XOTE
+#define CRYPTO_ALGNAME "Kyber768-xote"
 #else
 #define CRYPTO_ALGNAME "Kyber768"
 #endif
@@ -29,6 +33,8 @@
 #define CRYPTO_ALGNAME "Kyber1024-90s"
 #elif KYBER_FORRO
 #define CRYPTO_ALGNAME "Kyber1024-forro"
+#elif KYBER_XOTE
+#define CRYPTO_ALGNAME "Kyber1024-xote"
 #else
 #define CRYPTO_ALGNAME "Kyber1024"
 #endif

@@ -86,21 +86,25 @@ void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char 
   //Open file
   FILE *fpt;
   fpt = fopen(filename_tmp, "a+");
-  if (NULL != fpt) 
-  {
-    fseek (fpt, 0, SEEK_END);
-    size_t size = ftell(fpt);
+  // if (NULL != fpt) 
+  // {
+  //   fseek (fpt, 0, SEEK_END);
+  //   size_t size = ftell(fpt);
 
-    if (0 == size) {
-        printf("File is empty, printing header...\n");
-        fprintf(fpt, "median,average\n");
-    }
-    else 
-    {
-        printf("File is not empty, appending...\n");
-    }
-  }
-  fprintf(fpt, "%llu,%llu\n", (unsigned long long)u64_median, (unsigned long long)u64_average);
+  //   if (0 == size) {
+  //       printf("File is empty, printing header...\n");
+  //       fprintf(fpt, "median,average\n");
+  //   }
+  //   else 
+  //   {
+  //       printf("File is not empty, appending...\n");
+  //   }
+  // }
+  // fprintf(fpt, "%llu,%llu\n", (unsigned long long)u64_median, (unsigned long long)u64_average);
+  for(i=0;i<tlen-1;++i)
+    fprintf(fpt, "%llu\n", (unsigned long long)t[i]);
   fclose(fpt);
+
+
   free(filename_tmp);
 }

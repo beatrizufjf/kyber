@@ -40,6 +40,9 @@ int main()
   #elif KYBER_FORRO
   printf("Using Kyber with Forro\n");
   sprintf(filename, "results/RESULTS_FORRO-K%d-", KYBER_K);
+  #elif KYBER_XOTE
+  printf("Using Kyber with Xote\n");
+  sprintf(filename, "results/RESULTS_XOTE-K%d-", KYBER_K);
   #else
   printf("Using Kyber with SHAKE\n");
   sprintf(filename, "results/RESULTS_SHAKE-K%d-", KYBER_K);

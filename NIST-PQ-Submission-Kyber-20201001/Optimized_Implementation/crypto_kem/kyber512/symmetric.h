@@ -70,8 +70,38 @@ void kyber_forro_prf(uint8_t *out,
 #define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
 #define prf(OUT, OUTBYTES, KEY, NONCE) \
         kyber_forro_prf(OUT, OUTBYTES, KEY, NONCE)
-// #define kdf(OUT, IN, INBYTES) forro_kdf(OUT, KYBER_SSBYTES, IN, INBYTES) //Lagrota colocar o kdf como Forro tb
 #define kdf(OUT, IN, INBYTES) forro_kdf(OUT, KYBER_SSBYTES, IN, INBYTES)
+
+#elif KYBER_XOTE
+
+#include "forro_cipher-main/src/xote/ref/xote.h"
+#include "fips202.h"
+
+typedef stream_ctx xof_state;
+#define kyber_xotexof_absorb KYBER_NAMESPACE(_kyber_xotexof_absorb)
+void kyber_xotexof_absorb(stream_ctx *state,
+                        const uint8_t seed[KYBER_SYMBYTES],
+                        uint8_t x,
+                        uint8_t y);
+
+#define kyber_xote_prf KYBER_NAMESPACE(_kyber_xote_prf)
+void kyber_xote_prf(uint8_t *out,
+                         size_t outlen,
+                         const uint8_t key[KYBER_SYMBYTES],
+                         uint8_t nonce);
+
+#define XOF_BLOCKBYTES XOTE_SIZE_BLOCK
+
+#define xof_absorb(STATE, SEED, X, Y) \
+        kyber_xotexof_absorb(STATE, SEED, X, Y)
+#define xof_squeezeblocks(OUT, OUTBLOCKS, STATE) \
+        xote_squeeze(OUT, OUTBLOCKS * XOTE_SIZE_BLOCK, STATE)        
+
+#define hash_h(OUT, IN, INBYTES) sha3_256(OUT, IN, INBYTES)
+#define hash_g(OUT, IN, INBYTES) sha3_512(OUT, IN, INBYTES)
+#define prf(OUT, OUTBYTES, KEY, NONCE) \
+        kyber_xote_prf(OUT, OUTBYTES, KEY, NONCE)
+#define kdf(OUT, IN, INBYTES) xote_kdf(OUT, KYBER_SSBYTES, IN, INBYTES)
 
 #else
 
