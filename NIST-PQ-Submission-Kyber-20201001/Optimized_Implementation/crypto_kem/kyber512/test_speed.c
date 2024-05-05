@@ -13,7 +13,7 @@
 #include <time.h>
 #include <unistd.h>
 
-#define NTESTS 10000
+#define NTESTS 1000
 
 uint64_t t[NTESTS];
 uint8_t seed[KYBER_SYMBYTES] = {0};
