@@ -13,12 +13,15 @@
 #include <time.h>
 #include <unistd.h>
 
-#define NTESTS 1000
+typedef
 
 uint64_t t[NTESTS];
+// uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];
+uint64_t t_before, t_after;
 uint8_t seed[KYBER_SYMBYTES] = {0};
 int main()
 {
+  vector_time vec_time;
   unsigned int i;
   unsigned char pk[CRYPTO_PUBLICKEYBYTES] = {0};
   unsigned char sk[CRYPTO_SECRETKEYBYTES] = {0};
@@ -36,66 +39,97 @@ int main()
   printf("Using KYBER_K = %d\n", KYBER_K);
   #ifdef KYBER_90S
   printf("Using Kyber with AES\n");
-  sprintf(filename, "results/RESULTS_AES-K%d-", KYBER_K);
+  sprintf(filename, "results/RESULTS_AES-K%d", KYBER_K);
   #elif KYBER_FORRO
   printf("Using Kyber with Forro\n");
-  sprintf(filename, "results/RESULTS_FORRO-K%d-", KYBER_K);
+  sprintf(filename, "results/RESULTS_FORRO-K%d", KYBER_K);
   #elif KYBER_XOTE
   printf("Using Kyber with Xote\n");
-  sprintf(filename, "results/RESULTS_XOTE-K%d-", KYBER_K);
+  sprintf(filename, "results/RESULTS_XOTE-K%d", KYBER_K);
   #else
   printf("Using Kyber with SHAKE\n");
-  sprintf(filename, "results/RESULTS_SHAKE-K%d-", KYBER_K);
+  sprintf(filename, "results/RESULTS_SHAKE-K%d", KYBER_K);
   #endif
   printf("\n ------------------------- \n\n");
 
+  // for(i=0;i<NTESTS;i++) {
+  //   // t[i] = cpucycles();
+  //   t_before = cpucycles();
+  //   gen_matrix(matrix, seed, 0);
+  //   t_after = cpucycles();
+  //   t_gen_a[i] = t_after - t_before;
+  // }
+  //   print_results_with_csv("gen_a: ", t, NTESTS, filename);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   poly_getnoise_eta1(&ap, seed, 0);
+  // }
+  //   print_results("poly_getnoise_eta1: ", t, NTESTS);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   poly_getnoise_eta2(&ap, seed, 0);
+  // }
+  //   print_results("poly_getnoise_eta2: ", t, NTESTS);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   poly_ntt(&ap);
+  // }
+  //   print_results("NTT: ", t, NTESTS);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   poly_invntt_tomont(&ap);
+  // }
+  //   print_results("INVNTT: ", t, NTESTS);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   crypto_kem_keypair(pk, sk);
+  // }
+  //   print_results_with_csv("kyber_keypair: ", t, NTESTS, filename);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   crypto_kem_enc(ct, key, pk);
+  // }
+  //   print_results_with_csv("kyber_encaps: ", t, NTESTS, filename);
+
+  // for(i=0;i<NTESTS;i++) {
+  //   t[i] = cpucycles();
+  //   crypto_kem_dec(key, ct, sk);
+  // }
+  //   print_results_with_csv("kyber_decaps: ", t, NTESTS, filename);
+
+
   for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
+    // t[i] = cpucycles();
+    t_before = cpucycles();
     gen_matrix(matrix, seed, 0);
-  }
-    print_results_with_csv("gen_a: ", t, NTESTS, filename);
+    t_after = cpucycles();
+    // t[i] = t_after - t_before;
+    vec_time.t_gen_a[i] = t_after - t_before;
 
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
-    poly_getnoise_eta1(&ap, seed, 0);
-  }
-    print_results("poly_getnoise_eta1: ", t, NTESTS);
-
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
-    poly_getnoise_eta2(&ap, seed, 0);
-  }
-    print_results("poly_getnoise_eta2: ", t, NTESTS);
-
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
-    poly_ntt(&ap);
-  }
-    print_results("NTT: ", t, NTESTS);
-
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
-    poly_invntt_tomont(&ap);
-  }
-    print_results("INVNTT: ", t, NTESTS);
-
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
+    t_before = cpucycles();
     crypto_kem_keypair(pk, sk);
-  }
-    print_results_with_csv("kyber_keypair: ", t, NTESTS, filename);
+    t_after = cpucycles();
+    vec_time.t_keypair[i] = t_after - t_before;
 
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
+    t_before = cpucycles();
     crypto_kem_enc(ct, key, pk);
-  }
-    print_results_with_csv("kyber_encaps: ", t, NTESTS, filename);
+    t_after = cpucycles();
+    vec_time.t_encaps[i] = t_after - t_before;
 
-  for(i=0;i<NTESTS;i++) {
-    t[i] = cpucycles();
+    t_before = cpucycles();
     crypto_kem_dec(key, ct, sk);
+    t_after = cpucycles();
+    vec_time.t_decaps[i] = t_after - t_before;
   }
-    print_results_with_csv("kyber_decaps: ", t, NTESTS, filename);
+    print_results_with_csv_str("gen_a: ", &vec_time, NTESTS, filename);
+
+
 /* 
   for(i=0;i<NTESTS;i++) {
     t[i] = cpucycles();

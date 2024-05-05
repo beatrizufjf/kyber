@@ -66,8 +66,8 @@ void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char 
     overhead = cpucycles_overhead();
 
   tlen--;
-  for(i=0;i<tlen;++i)
-    t[i] = t[i+1] - t[i] - overhead;
+  // for(i=0;i<tlen;++i)
+  //   t[i] = t[i+1] - t[i] - overhead;
 
   uint64_t u64_median = median(t, tlen);
   uint64_t u64_average = average(t, tlen);
@@ -105,6 +105,63 @@ void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char 
     fprintf(fpt, "%llu\n", (unsigned long long)t[i]);
   fclose(fpt);
 
+
+  free(filename_tmp);
+}
+
+void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tlen, const char *filename) {
+  size_t i;
+  static uint64_t overhead = -1;
+  char * filename_tmp = (char *)calloc(64, sizeof(char));
+  memcpy(filename_tmp, filename, strlen(filename));
+
+  if(tlen < 2) {
+    fprintf(stderr, "ERROR: Need a least two cycle counts!\n");
+    return;
+  }
+
+  // if(overhead  == (uint64_t)-1)
+  //   overhead = cpucycles_overhead();
+
+  // tlen--;
+  // for(i=0;i<tlen;++i)
+  //   t[i] = t[i+1] - t[i] - overhead;
+
+  uint64_t u64_median = median(vec_time->t_gen_a, tlen);
+  uint64_t u64_average = average(vec_time->t_gen_a, tlen);
+
+  printf("%s\n", s);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average);
+  printf("\n");
+
+  //Concatenate to form file name
+  // strcat(filename_tmp, s);
+  // size_t len = strlen(filename_tmp);
+  // filename_tmp[len-2] = 0x0;
+  strcat(filename_tmp, ".csv");
+
+  //Open file
+  FILE *fpt;
+  fpt = fopen(filename_tmp, "a+");
+  if (NULL != fpt) 
+  {
+    fseek (fpt, 0, SEEK_END);
+    size_t size = ftell(fpt);
+
+    if (0 == size) {
+        printf("File is empty, printing header...\n");
+        fprintf(fpt, "gen_a,keypair,encaps,decaps\n");
+    }
+    else 
+    {
+        printf("File is not empty, appending...\n");
+    }
+  }
+  // fprintf(fpt, "%llu,%llu\n", (unsigned long long)u64_median, (unsigned long long)u64_average);
+  for(i=10;i<tlen-10;++i)
+    fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)vec_time->t_gen_a[i], (unsigned long long)vec_time->t_keypair[i], (unsigned long long)vec_time->t_encaps[i], (unsigned long long)vec_time->t_decaps[i]);
+  fclose(fpt);
 
   free(filename_tmp);
 }

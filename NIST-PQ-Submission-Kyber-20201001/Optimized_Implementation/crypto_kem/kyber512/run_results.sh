@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the number of times to run the ./test_speed command
-N=1
+N=10
 
 # Create the "results" folder if it doesn't exist
 if [ ! -d "results" ]; then
@@ -15,7 +15,7 @@ rm -f results/*
 
 # Define possible values for SEC_K and IMPLEMENTATION
 SEC_K_VALUES=(2 3 4)
-IMPLEMENTATION_VALUES=("AES" "FORRO" "SHAKE")
+IMPLEMENTATION_VALUES=("AES" "FORRO" "SHAKE" "XOTE")
 
 # Loop through all combinations of SEC_K and IMPLEMENTATION
 for SEC_K in "${SEC_K_VALUES[@]}"; do

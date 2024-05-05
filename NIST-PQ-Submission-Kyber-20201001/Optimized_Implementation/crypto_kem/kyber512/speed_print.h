@@ -4,7 +4,17 @@
 #include <stddef.h>
 #include <stdint.h>
 
+#define NTESTS 10000
+
+typedef struct vector_time_str {
+    uint64_t t_gen_a[NTESTS];
+    uint64_t t_keypair[NTESTS];
+    uint64_t t_encaps[NTESTS];
+    uint64_t t_decaps[NTESTS];
+} vector_time;
+
 void print_results(const char *s, uint64_t *t, size_t tlen);
 void print_results_with_csv(const char *s, uint64_t *t, size_t tlen, const char *filename);
+void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tlen, const char *filename);
 
 #endif
