@@ -127,12 +127,24 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
   // for(i=0;i<tlen;++i)
   //   t[i] = t[i+1] - t[i] - overhead;
 
-  uint64_t u64_median = median(vec_time->t_gen_a, tlen);
-  uint64_t u64_average = average(vec_time->t_gen_a, tlen);
+  uint64_t u64_median_gen_a = median(vec_time->t_gen_a, tlen);
+  uint64_t u64_average_gen_a = average(vec_time->t_gen_a, tlen);
+  uint64_t u64_median_keypair = median(vec_time->t_keypair, tlen);
+  uint64_t u64_average_keypair = average(vec_time->t_keypair, tlen);
+  uint64_t u64_median_encaps = median(vec_time->t_encaps, tlen);
+  uint64_t u64_average_encaps = average(vec_time->t_encaps, tlen);
+  uint64_t u64_median_decaps = median(vec_time->t_decaps, tlen);
+  uint64_t u64_average_decaps = average(vec_time->t_decaps, tlen);
 
-  printf("%s\n", s);
-  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median);
-  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average);
+  // printf("%s\n", s);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_gen_a);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_gen_a);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_keypair);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_keypair);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_encaps);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_encaps);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_decaps);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_decaps);
   printf("\n");
 
   //Concatenate to form file name
@@ -159,8 +171,11 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
     }
   }
   // fprintf(fpt, "%llu,%llu\n", (unsigned long long)u64_median, (unsigned long long)u64_average);
-  for(i=10;i<tlen-10;++i)
-    fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)vec_time->t_gen_a[i], (unsigned long long)vec_time->t_keypair[i], (unsigned long long)vec_time->t_encaps[i], (unsigned long long)vec_time->t_decaps[i]);
+  // for(i=10;i<tlen-10;++i)
+  //   fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)vec_time->t_gen_a[i], (unsigned long long)vec_time->t_keypair[i], (unsigned long long)vec_time->t_encaps[i], (unsigned long long)vec_time->t_decaps[i]);
+  printf("Writing in file...\n");
+  fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)u64_median_gen_a, (unsigned long long)u64_median_keypair, (unsigned long long)u64_average_encaps, (unsigned long long)u64_average_decaps);
+  printf("Closing file\n");
   fclose(fpt);
 
   free(filename_tmp);
