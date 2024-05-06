@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the number of times to run the ./test_speed command
-N=10
+N=100
 
 # Create the "results" folder if it doesn't exist
 if [ ! -d "results" ]; then
