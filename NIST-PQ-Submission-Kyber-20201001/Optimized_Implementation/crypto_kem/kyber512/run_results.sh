@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the number of times to run the ./test_speed command
-N=10
+N=1000
 
 # Create the "results" folder if it doesn't exist
 if [ ! -d "results" ]; then
@@ -29,7 +29,7 @@ for SEC_K in "${SEC_K_VALUES[@]}"; do
         # Run the ./test_speed command N times
         for ((i=1; i<=N; i++)); do
             echo "Running ./test_speed (iteration $i)"
-            ./test_speed
+            sudo nice -n -20 ./test_speed
         done
 
         echo "------------------"
