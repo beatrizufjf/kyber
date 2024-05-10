@@ -14,21 +14,39 @@ print_algs = ['SHAKE', 'FORRO', 'XOTE']
 list_count = list(range(1, len(print_algs)+1))
 print(list_count)
 
-for k in [2, 3, 4]:
-    print(f'Plotting k = {k}')
-    for func in ['gen_a', 'keypair', 'encaps', 'decaps']:
+for func in ['gen_a', 'keypair', 'encaps', 'decaps']:
+    # print(f'Plotting k = {k}')
+    fig, axs = plt.subplots(nrows=1, ncols=3, sharex=False, figsize=(15, 4))
+    for i,k in enumerate([2, 3, 4]):
         plot_list = []
+        
         for cur_alg in all_algs:
             if(cur_alg in print_algs):
                 df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
                 plot_list.append(df[func])
                 print(f"Median of {cur_alg}-K{k}-{func}: {df[func].median()}")
-        plt.figure(figsize =(11, 6))
-        bplots = plt.boxplot(plot_list, vert = 1, patch_artist = False, labels=print_algs)
+
+        # plt.figure(figsize =(11, 6))
+        bplots = axs[i].boxplot(plot_list, vert = 1, patch_artist = False, labels=print_algs, widths = .5)
         # Adicionando Título ao gráfico
-        plt.title("Boxplot " + func, loc="center", fontsize=18)
+        axs[i].set_title("K: " + str(k), loc="center", fontsize=18)
         # plt.xticks(list_count, print_algs)
-        plt.xlabel("Algorithm")
-        plt.ylabel("Cycles/ticks")
-        plt.savefig(folderpath + func + '-K' + str(k) + '.' + figures_format, format=figures_format)
-        # plt.show()
+        # axs[i].yticks(fontsize=18)
+        # axs[0].xlabel("Algorithm")
+        # axs[0].set_ylabel("Cycles/ticks")
+        # ax0.savefig(folderpath + func + '-K' + str(k) + '.' + figures_format, format=figures_format)
+        # if(i == 0):
+    
+        axs[i].tick_params(axis='both', which='major', labelsize=18)
+        axs[i].ticklabel_format(style='sci', axis='y', scilimits=(0,0), useMathText=True)
+
+    axs[0].set_ylabel("Cycles/ticks", fontsize=18)
+    # for ax in axs.flat:
+    #     ax.set(xlabel='x-label', ylabel='y-label')
+        
+    # fig.text(0.5, 0.04, 'common X', ha='center')
+    # fig.text(0.1, 0.5, 'common Y', va='center', rotation='vertical')
+    
+    # fig.suptitle(func)
+    fig.savefig(folderpath + func + '.' + figures_format, format=figures_format)
+    # plt.show()
