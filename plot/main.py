@@ -10,7 +10,7 @@ figures_format = "png"
 # figures_format = "eps"
 
 all_algs = ['AES', 'SHAKE', 'FORRO', 'XOTE']
-print_algs = ['SHAKE', 'XOTE']
+print_algs = ['SHAKE', 'FORRO', 'XOTE']
 list_count = list(range(1, len(print_algs)+1))
 print(list_count)
 
@@ -22,6 +22,7 @@ for k in [2, 3, 4]:
             if(cur_alg in print_algs):
                 df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
                 plot_list.append(df[func])
+                print(f"Median of {cur_alg}-K{k}-{func}: {df[func].median()}")
         plt.figure(figsize =(11, 6))
         bplots = plt.boxplot(plot_list, vert = 1, patch_artist = False, labels=print_algs)
         # Adicionando Título ao gráfico
