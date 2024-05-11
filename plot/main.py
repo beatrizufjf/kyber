@@ -14,7 +14,7 @@ print_algs = ['SHAKE', 'FORRO', 'XOTE']
 list_count = list(range(1, len(print_algs)+1))
 print(list_count)
 
-for func in ['gen_a', 'keypair', 'encaps', 'decaps']:
+for func in ['xof_absorb', 'xof_squeeze', 'prf', 'kdf', 'gen_a', 'keypair', 'encaps', 'decaps']:
     # print(f'Plotting k = {k}')
     fig, axs = plt.subplots(nrows=1, ncols=3, sharex=False, figsize=(15, 4))
     for i,k in enumerate([2, 3, 4]):

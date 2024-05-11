@@ -126,7 +126,14 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
   // tlen--;
   // for(i=0;i<tlen;++i)
   //   t[i] = t[i+1] - t[i] - overhead;
-
+  uint64_t u64_median_xof_absorb = median(vec_time->t_xof_absorb, tlen);
+  uint64_t u64_average_xof_absorb = average(vec_time->t_xof_absorb, tlen);
+  uint64_t u64_median_xof_squeeze = median(vec_time->t_xof_squeeze, tlen);
+  uint64_t u64_average_xof_squeeze = average(vec_time->t_xof_squeeze, tlen);
+  uint64_t u64_median_prf = median(vec_time->t_prf, tlen);
+  uint64_t u64_average_prf = average(vec_time->t_prf, tlen);
+  uint64_t u64_median_kdf = median(vec_time->t_kdf, tlen);
+  uint64_t u64_average_kdf = average(vec_time->t_kdf, tlen);
   uint64_t u64_median_gen_a = median(vec_time->t_gen_a, tlen);
   uint64_t u64_average_gen_a = average(vec_time->t_gen_a, tlen);
   uint64_t u64_median_keypair = median(vec_time->t_keypair, tlen);
@@ -137,6 +144,14 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
   uint64_t u64_average_decaps = average(vec_time->t_decaps, tlen);
 
   // printf("%s\n", s);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_xof_absorb);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_xof_absorb);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_xof_squeeze);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_xof_squeeze);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_prf);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_prf);
+  printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_kdf);
+  printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_kdf);
   printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_gen_a);
   printf("average: %llu cycles/ticks\n", (unsigned long long)u64_average_gen_a);
   printf("median: %llu cycles/ticks\n", (unsigned long long)u64_median_keypair);
@@ -163,7 +178,7 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
 
     if (0 == size) {
         printf("File is empty, printing header...\n");
-        fprintf(fpt, "gen_a,keypair,encaps,decaps\n");
+        fprintf(fpt, "xof_absorb,xof_squeeze,prf,kdf,gen_a,keypair,encaps,decaps\n");
     }
     else 
     {
@@ -174,7 +189,7 @@ void print_results_with_csv_str(const char *s, vector_time *vec_time, size_t tle
   // for(i=10;i<tlen-10;++i)
   //   fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)vec_time->t_gen_a[i], (unsigned long long)vec_time->t_keypair[i], (unsigned long long)vec_time->t_encaps[i], (unsigned long long)vec_time->t_decaps[i]);
   printf("Writing in file...\n");
-  fprintf(fpt, "%llu,%llu,%llu,%llu\n", (unsigned long long)u64_median_gen_a, (unsigned long long)u64_median_keypair, (unsigned long long)u64_average_encaps, (unsigned long long)u64_average_decaps);
+  fprintf(fpt, "%llu,%llu,%llu,%llu,%llu,%llu,%llu,%llu\n", (unsigned long long)u64_median_xof_absorb, (unsigned long long)u64_median_xof_squeeze, (unsigned long long)u64_median_prf, (unsigned long long)u64_median_kdf, (unsigned long long)u64_median_gen_a, (unsigned long long)u64_median_keypair, (unsigned long long)u64_average_encaps, (unsigned long long)u64_average_decaps);
   printf("Closing file\n");
   fclose(fpt);
 
