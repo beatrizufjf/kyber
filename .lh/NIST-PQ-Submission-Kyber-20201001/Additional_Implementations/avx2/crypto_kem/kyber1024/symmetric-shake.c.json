@@ -1,0 +1,34 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Additional_Implementations/avx2/crypto_kem/kyber1024/symmetric-shake.c",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 4,
+            "patches": [
+                {
+                    "date": 1715278361736,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715278426232,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -49,13 +49,20 @@\n                         size_t outlen,\n                         const uint8_t key[KYBER_SYMBYTES],\n                         uint8_t nonce)\n {\n+  int inicio = clock();\n+\n   unsigned int i;\n   uint8_t extkey[KYBER_SYMBYTES+1];\n \n   for(i=0;i<KYBER_SYMBYTES;i++)\n     extkey[i] = key[i];\n   extkey[i] = nonce;\n \n   shake256(out, outlen, extkey, sizeof(extkey));\n+\n+  int intervalo = clock() - inicio;\n+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n+  registrar_resultado(tempo_ms, TOTAL_PRF_SHAKE);\n+  \n }\n"
+                },
+                {
+                    "date": 1715278439380,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,6 @@\n #include <stddef.h>\n+#include <time.h>\n #include <stdint.h>\n #include \"params.h\"\n #include \"fips202.h\"\n #include \"symmetric.h\"\n@@ -63,6 +64,6 @@\n \n   int intervalo = clock() - inicio;\n   float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n   registrar_resultado(tempo_ms, TOTAL_PRF_SHAKE);\n-  \n+\n }\n"
+                },
+                {
+                    "date": 1715278484854,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,10 +3,10 @@\n #include <stdint.h>\n #include \"params.h\"\n #include \"fips202.h\"\n #include \"symmetric.h\"\n-#include \"test_speed.h\"\n \n+\n /*************************************************\n * Name:        kyber_shake128_absorb\n *\n * Description: Absorb step of the SHAKE128 specialized for the Kyber context.\n@@ -64,6 +64,5 @@\n \n   int intervalo = clock() - inicio;\n   float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n   registrar_resultado(tempo_ms, TOTAL_PRF_SHAKE);\n-\n }\n"
+                },
+                {
+                    "date": 1715278497111,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -50,19 +50,13 @@\n                         size_t outlen,\n                         const uint8_t key[KYBER_SYMBYTES],\n                         uint8_t nonce)\n {\n-  int inicio = clock();\n-\n   unsigned int i;\n   uint8_t extkey[KYBER_SYMBYTES+1];\n \n   for(i=0;i<KYBER_SYMBYTES;i++)\n     extkey[i] = key[i];\n   extkey[i] = nonce;\n \n   shake256(out, outlen, extkey, sizeof(extkey));\n-\n-  int intervalo = clock() - inicio;\n-  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n-  registrar_resultado(tempo_ms, TOTAL_PRF_SHAKE);\n }\n"
+                }
+            ],
+            "date": 1715278361736,
+            "name": "Commit-0",
+            "content": "#include <stddef.h>\n#include <stdint.h>\n#include \"params.h\"\n#include \"fips202.h\"\n#include \"symmetric.h\"\n#include \"test_speed.h\"\n\n/*************************************************\n* Name:        kyber_shake128_absorb\n*\n* Description: Absorb step of the SHAKE128 specialized for the Kyber context.\n*\n* Arguments:   - keccak_state *state: pointer to (uninitialized) output\n*                                     Keccak state\n*              - const uint8_t *seed: pointer to KYBER_SYMBYTES input\n*                                     to be absorbed into state\n*              - uint8_t i            additional byte of input\n*              - uint8_t j            additional byte of input\n**************************************************/\nvoid kyber_shake128_absorb(keccak_state *state,\n                           const uint8_t seed[KYBER_SYMBYTES],\n                           uint8_t x,\n                           uint8_t y)\n{\n  unsigned int i;\n  uint8_t extseed[KYBER_SYMBYTES+2];\n\n  for(i=0;i<KYBER_SYMBYTES;i++)\n    extseed[i] = seed[i];\n  extseed[i++] = x;\n  extseed[i]   = y;\n\n  shake128_absorb(state, extseed, sizeof(extseed));\n}\n\n/*************************************************\n* Name:        kyber_shake256_prf\n*\n* Description: Usage of SHAKE256 as a PRF, concatenates secret and public input\n*              and then generates outlen bytes of SHAKE256 output\n*\n* Arguments:   - uint8_t *out:       pointer to output\n*              - size_t outlen:      number of requested output bytes\n*              - const uint8_t *key: pointer to the key\n*                                    (of length KYBER_SYMBYTES)\n*              - uint8_t nonce:      single-byte nonce (public PRF input)\n**************************************************/\nvoid kyber_shake256_prf(uint8_t *out,\n                        size_t outlen,\n                        const uint8_t key[KYBER_SYMBYTES],\n                        uint8_t nonce)\n{\n  unsigned int i;\n  uint8_t extkey[KYBER_SYMBYTES+1];\n\n  for(i=0;i<KYBER_SYMBYTES;i++)\n    extkey[i] = key[i];\n  extkey[i] = nonce;\n\n  shake256(out, outlen, extkey, sizeof(extkey));\n}\n"
+        }
+    ]
+}

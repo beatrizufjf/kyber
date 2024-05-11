@@ -1,0 +1,58 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/test_speed.h",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 10,
+            "patches": [
+                {
+                    "date": 1715276676758,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715276799496,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,9 @@\n #ifndef TEST_SPEED_H\n #define TEST_SPEED_H\n \n-float tempo_total;\n-int testes_ate_agora;\n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado);\n void printar_media();\n \n"
+                },
+                {
+                    "date": 1715276913028,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,9 +1,7 @@\n #ifndef TEST_SPEED_H\n #define TEST_SPEED_H\n \n-float tempo_total = 0.0;\n-int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado);\n void printar_media();\n \n"
+                },
+                {
+                    "date": 1715276958726,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,9 @@\n #ifndef TEST_SPEED_H\n #define TEST_SPEED_H\n \n+extern float tempo_total;\n+extern int testes_ate_agora;\n \n void registrar_resultado(float resultado);\n void printar_media();\n \n"
+                },
+                {
+                    "date": 1715277674483,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,7 +1,12 @@\n #ifndef TEST_SPEED_H\n #define TEST_SPEED_H\n \n+#define TOTAL_PRF_XOTE 0\n+#define TOTAL_PRF_SHAKE 1\n+#define TOTAL_KDF_XOTE 2\n+#define TOTAL_KDF_SHAKE 3\n+\n extern float tempo_total;\n extern int testes_ate_agora;\n \n void registrar_resultado(float resultado);\n"
+                },
+                {
+                    "date": 1715277694383,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,8 @@\n \n extern float tempo_total;\n extern int testes_ate_agora;\n \n-void registrar_resultado(float resultado);\n-void printar_media();\n+void registrar_resultado(float resultado, int qual_total);\n+void printar_media(int qual_total);\n \n #endif\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1715277851857,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,10 +5,10 @@\n #define TOTAL_PRF_SHAKE 1\n #define TOTAL_KDF_XOTE 2\n #define TOTAL_KDF_SHAKE 3\n \n-extern float tempo_total;\n-extern int testes_ate_agora;\n+extern float[] tempo_total;\n+extern int[] testes_ate_agora;\n \n void registrar_resultado(float resultado, int qual_total);\n void printar_media(int qual_total);\n \n"
+                },
+                {
+                    "date": 1715277871615,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -5,10 +5,10 @@\n #define TOTAL_PRF_SHAKE 1\n #define TOTAL_KDF_XOTE 2\n #define TOTAL_KDF_SHAKE 3\n \n-extern float[] tempo_total;\n-extern int[] testes_ate_agora;\n+extern float tempo_total[];\n+extern int testes_ate_agora[];\n \n void registrar_resultado(float resultado, int qual_total);\n void printar_media(int qual_total);\n \n"
+                },
+                {
+                    "date": 1715279909919,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -8,8 +8,9 @@\n \n extern float tempo_total[];\n extern int testes_ate_agora[];\n \n+char* nome_categoria(int categoria);\n void registrar_resultado(float resultado, int qual_total);\n void printar_media(int qual_total);\n \n #endif\n\\ No newline at end of file\n"
+                },
+                {
+                    "date": 1715281212779,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,10 @@\n #define TOTAL_PRF_XOTE 0\n #define TOTAL_PRF_SHAKE 1\n #define TOTAL_KDF_XOTE 2\n #define TOTAL_KDF_SHAKE 3\n+#define TOTAL_XOF_SHAKE 4\n+#define TOTAL_XOF_XOTE 5\n \n extern float tempo_total[];\n extern int testes_ate_agora[];\n \n"
+                },
+                {
+                    "date": 1715281952733,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,11 +4,14 @@\n #define TOTAL_PRF_XOTE 0\n #define TOTAL_PRF_SHAKE 1\n #define TOTAL_KDF_XOTE 2\n #define TOTAL_KDF_SHAKE 3\n-#define TOTAL_XOF_SHAKE 4\n-#define TOTAL_XOF_XOTE 5\n+#define TOTAL_XOF_ABSORB_SHAKE 4\n+#define TOTAL_XOF_ABSORB_XOTE 5\n+#define TOTAL_XOF_SQUEEZE_SHAKE 6\n+#define TOTAL_XOF_SQUEEZE_XOTE 7\n \n+\n extern float tempo_total[];\n extern int testes_ate_agora[];\n \n char* nome_categoria(int categoria);\n"
+                }
+            ],
+            "date": 1715276676758,
+            "name": "Commit-0",
+            "content": "#ifndef TEST_SPEED_H\n#define TEST_SPEED_H\n\nfloat tempo_total;\nint testes_ate_agora;\n\nvoid registrar_resultado(float resultado);\nvoid printar_media();\n\n#endif"
+        }
+    ]
+}

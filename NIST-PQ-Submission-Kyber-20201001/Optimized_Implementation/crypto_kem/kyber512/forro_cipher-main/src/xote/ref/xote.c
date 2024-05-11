@@ -1,5 +1,9 @@
 #include "xote.h"
 #include <stdio.h>
+#include <time.h>
+#include "../../../../speed_print.h"
+#include "../../../../test_speed.h"
+
 #pragma GCC optimize("O3")
 #define rounds 7
 #define ROTL(a, b) (((a) << (b)) | ((a) >> (32 - (b))))
@@ -189,12 +193,18 @@ void xote_keystream_bytes(stream_ctx *x, uint8_t *stream, uint32_t bytes)
 
 void xote_prf(uint8_t *out, size_t outlen, const uint8_t key[KYBER_SYMBYTES], uint8_t * expnonce)
 {
+    int inicio = clock();
+
     stream_ctx ctx;
     xote_keysetup(&ctx, (uint8_t *)key);
     uint8_t iv[8] = { 0 };
     iv[0] = expnonce[0];
     xote_ivsetup(&ctx, iv);
     xote_keystream_bytes(&ctx, out, (uint32_t)outlen);
+
+    int intervalo = clock() - inicio;
+    float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+    registrar_resultado(tempo_ms, TOTAL_PRF_XOTE);
 }
 
 void xote_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce)
@@ -210,11 +220,17 @@ void xote_absorb(stream_ctx *ctx, const uint8_t *seed, uint8_t * expnonce)
 
 void xote_squeeze(uint8_t *out, size_t outbytes, stream_ctx *ctx)
 {
+    int inicio = clock();
     xote_generate_bytes(ctx, out, outbytes);
+    int intervalo = clock() - inicio;
+    float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+    registrar_resultado(tempo_ms, TOTAL_XOF_SQUEEZE_XOTE);
 }
+
 
 void xote_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen)
 {
+    int inicio = clock();
     stream_ctx ctx = { 0x0 };
     uint32_t iv[2] = { 0x0 };
     size_t ctr = 0;
@@ -242,5 +258,9 @@ void xote_kdf(uint8_t *out, size_t outlen, uint8_t *in, size_t inlen)
         xote_ivsetup_xor(&ctx, (uint8_t *)iv);
     }
  
-    xote_generate_bytes(&ctx, out, outlen);   
+    xote_generate_bytes(&ctx, out, outlen);
+    int intervalo = clock() - inicio;
+    float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+    registrar_resultado(tempo_ms, TOTAL_KDF_XOTE);
+    
 }

@@ -1,8 +1,10 @@
 #include <stddef.h>
+#include <time.h>
 #include <stdint.h>
 #include "params.h"
 #include "fips202.h"
 #include "symmetric.h"
+
 
 /*************************************************
 * Name:        kyber_shake128_absorb

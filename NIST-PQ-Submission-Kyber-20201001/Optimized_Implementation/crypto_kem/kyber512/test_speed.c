@@ -12,10 +12,33 @@
 #include "speed_print.h"
 #include <time.h>
 #include <unistd.h>
+#include "test_speed.h"
 
-typedef
+float tempo_total[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
+int testes_ate_agora[8] = {-1, -1, -1, -1, -1, -1, -1, -1};
+char nomes_em_ordem[64][64] = {"TOTAL_PRF_XOTE", "TOTAL_PRF_SHAKE", "TOTAL_KDF_XOTE", "TOTAL_KDF_SHAKE", "TOTAL_XOF_ABSORB_SHAKE", "TOTAL_XOF_ABSORB_XOTE", "TOTAL_XOF_SQUEEZE_SHAKE", "TOTAL_XOF_SQUEEZE_XOTE"};
 
-uint64_t t[NTESTS];
+char* nome_categoria(int categoria) {
+  return nomes_em_ordem[categoria];
+}
+
+void registrar_resultado(float resultado, int qual_total) {
+    tempo_total[qual_total] += resultado;
+    testes_ate_agora[qual_total]++;
+}
+
+void printar_media(int qual_total) {
+  int testes = testes_ate_agora[qual_total];
+
+  if (testes == -1) return;
+
+  printf("Foram feitos um total de %d testes para %s, média foi de %f ms\n", 
+    testes_ate_agora[qual_total], 
+    nome_categoria(qual_total),
+    (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);
+}
+
+typedef uint64_t t[NTESTS];
 // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];
 uint64_t t_before, t_after;
 uint8_t seed[KYBER_SYMBYTES] = {0};
@@ -103,7 +126,6 @@ int main()
   // }
   //   print_results_with_csv("kyber_decaps: ", t, NTESTS, filename);
 
-
   for(i=0;i<NTESTS;i++) {
     // t[i] = cpucycles();
     t_before = cpucycles();
@@ -127,7 +149,19 @@ int main()
     t_after = cpucycles();
     vec_time.t_decaps[i] = t_after - t_before;
   }
-    print_results_with_csv_str("gen_a: ", &vec_time, NTESTS, filename);
+
+  printar_media(TOTAL_PRF_XOTE);
+  printar_media(TOTAL_KDF_XOTE);
+  printar_media(TOTAL_PRF_SHAKE);
+  printar_media(TOTAL_KDF_SHAKE);
+  printar_media(TOTAL_XOF_ABSORB_SHAKE);
+  printar_media(TOTAL_XOF_ABSORB_XOTE);
+  printar_media(TOTAL_XOF_SQUEEZE_SHAKE);
+  printar_media(TOTAL_XOF_SQUEEZE_XOTE);
+
+  print_results_with_csv_str("gen_a: ", &vec_time, NTESTS, filename);
+    
+
 
 
 /* 

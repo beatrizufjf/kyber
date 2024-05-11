@@ -1,0 +1,30 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/teste_speed.h",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 3,
+            "patches": [
+                {
+                    "date": 1715276150937,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715276178159,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -0,0 +1,2 @@\n+void registrar_resultado(float resultado);\n+void printar_media();\n"
+                },
+                {
+                    "date": 1715276216274,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,2 +1,5 @@\n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n+\n void registrar_resultado(float resultado);\n void printar_media();\n"
+                },
+                {
+                    "date": 1715276231299,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,5 +1,5 @@\n-float tempo_total = 0.0;\n-int testes_ate_agora = 0;\n+float tempo_total;\n+int testes_ate_agora;\n \n void registrar_resultado(float resultado);\n void printar_media();\n"
+                }
+            ],
+            "date": 1715276150937,
+            "name": "Commit-0",
+            "content": ""
+        }
+    ]
+}

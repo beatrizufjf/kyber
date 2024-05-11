@@ -1,0 +1,210 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/test_speed.c",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 48,
+            "patches": [
+                {
+                    "date": 1715275514828,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715275533809,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,9 @@\n #include <time.h>\n #include <unistd.h>\n #include \"testes.h\"\n \n-typedef\n-\n-uint64_t t[NTESTS];\n+typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n uint64_t t_before, t_after;\n uint8_t seed[KYBER_SYMBYTES] = {0};\n int main()\n@@ -127,10 +125,10 @@\n     t_after = cpucycles();\n     vec_time.t_decaps[i] = t_after - t_before;\n   }\n \n+printar_media();\n \n-\n   print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n     \n \n \n"
+                },
+                {
+                    "date": 1715275668240,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -125,9 +125,9 @@\n     t_after = cpucycles();\n     vec_time.t_decaps[i] = t_after - t_before;\n   }\n \n-printar_media();\n+  printar_media();\n \n   print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n     \n \n"
+                },
+                {
+                    "date": 1715275745228,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,10 +11,21 @@\n #include \"cpucycles.h\"\n #include \"speed_print.h\"\n #include <time.h>\n #include <unistd.h>\n-#include \"testes.h\"\n \n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n+\n+void registrar_resultado(float resultado) {\n+    tempo_total += resultado;\n+    testes_ate_agora ++;\n+}\n+\n+void printar_media() {\n+    printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n+}\n+\n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n uint64_t t_before, t_after;\n uint8_t seed[KYBER_SYMBYTES] = {0};\n"
+                },
+                {
+                    "date": 1715275890029,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,13 +15,15 @@\n \n float tempo_total = 0.0;\n int testes_ate_agora = 0;\n \n+void registrar_resultado(float resultado);\n void registrar_resultado(float resultado) {\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n+void printar_media();\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n \n"
+                },
+                {
+                    "date": 1715275988691,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,9 @@\n int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado);\n void registrar_resultado(float resultado) {\n+    print(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n"
+                },
+                {
+                    "date": 1715276010110,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado);\n void registrar_resultado(float resultado) {\n-    print(\"A função rodou em %f ms\", resultado);\n+    printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n"
+                },
+                {
+                    "date": 1715276168788,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,9 +15,8 @@\n \n float tempo_total = 0.0;\n int testes_ate_agora = 0;\n \n-void registrar_resultado(float resultado);\n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n     testes_ate_agora ++;\n"
+                },
+                {
+                    "date": 1715276246745,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,9 +21,8 @@\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n-void printar_media();\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n \n"
+                },
+                {
+                    "date": 1715276262515,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -11,8 +11,9 @@\n #include \"cpucycles.h\"\n #include \"speed_print.h\"\n #include <time.h>\n #include <unistd.h>\n+#include \"test_speed.h\"\n \n float tempo_total = 0.0;\n int testes_ate_agora = 0;\n \n"
+                },
+                {
+                    "date": 1715276474812,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total = 0.0;\n-int testes_ate_agora = 0;\n+tempo_total = 0.0;\n+testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n"
+                },
+                {
+                    "date": 1715276595102,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-tempo_total = 0.0;\n-testes_ate_agora = 0;\n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n"
+                },
+                {
+                    "date": 1715276752446,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total = 0.0;\n-int testes_ate_agora = 0;\n+tempo_total = 0.0;\n+testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n"
+                },
+                {
+                    "date": 1715276787671,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,8 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-tempo_total = 0.0;\n-testes_ate_agora = 0;\n-\n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n     testes_ate_agora ++;\n"
+                },
+                {
+                    "date": 1715276855499,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,10 +15,10 @@\n #include \"test_speed.h\"\n \n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n-    tempo_total += resultado;\n-    testes_ate_agora ++;\n+    //tempo_total += resultado;\n+    //testes_ate_agora ++;\n }\n \n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n"
+                },
+                {
+                    "date": 1715276905411,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,9 +20,9 @@\n     //testes_ate_agora ++;\n }\n \n void printar_media() {\n-    printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n+    //printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715277002229,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,16 +13,19 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n+\n void registrar_resultado(float resultado) {\n     printf(\"A função rodou em %f ms\", resultado);\n-    //tempo_total += resultado;\n-    //testes_ate_agora ++;\n+    tempo_total += resultado;\n+    testes_ate_agora ++;\n }\n \n void printar_media() {\n-    //printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n+    printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715277038210,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,8 @@\n float tempo_total = 0.0;\n int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n-    printf(\"A função rodou em %f ms\", resultado);\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n"
+                },
+                {
+                    "date": 1715277185215,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -21,11 +21,13 @@\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n \n+#ifdef KYBER_XOTE\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n+#endif\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n uint64_t t_before, t_after;\n"
+                },
+                {
+                    "date": 1715277270728,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -20,14 +20,11 @@\n void registrar_resultado(float resultado) {\n     tempo_total += resultado;\n     testes_ate_agora ++;\n }\n-\n-#ifdef KYBER_XOTE\n void printar_media() {\n-    printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n+    printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n-#endif\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n uint64_t t_before, t_after;\n"
+                },
+                {
+                    "date": 1715277346847,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,9 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total = 0.0;\n+\n+float tempo_total[256] = {0};\n int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n     tempo_total += resultado;\n"
+                },
+                {
+                    "date": 1715277401725,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,14 +13,16 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n+#define TOTAL_XOTE 0\n+#define TOTAL_OUTRO 1\n \n float tempo_total[256] = {0};\n int testes_ate_agora = 0;\n \n-void registrar_resultado(float resultado) {\n-    tempo_total += resultado;\n+void registrar_resultado(float resultado, int qual_total) {\n+    tempo_total[qual_total] += resultado;\n     testes_ate_agora ++;\n }\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n"
+                },
+                {
+                    "date": 1715277420956,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -14,9 +14,9 @@\n #include <unistd.h>\n #include \"test_speed.h\"\n \n #define TOTAL_XOTE 0\n-#define TOTAL_OUTRO 1\n+#define TOTAL_SHAKE 1\n \n float tempo_total[256] = {0};\n int testes_ate_agora = 0;\n \n"
+                },
+                {
+                    "date": 1715277517469,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,11 +13,14 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-#define TOTAL_XOTE 0\n-#define TOTAL_SHAKE 1\n+#define TOTAL_PRF_XOTE 0\n+#define TOTAL_PRF_SHAKE 1\n+#define TOTAL_KDF_XOTE 2\n+#define TOTAL_KDF_SHAKE 2\n \n+\n float tempo_total[256] = {0};\n int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715277551805,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,13 +16,12 @@\n \n #define TOTAL_PRF_XOTE 0\n #define TOTAL_PRF_SHAKE 1\n #define TOTAL_KDF_XOTE 2\n-#define TOTAL_KDF_SHAKE 2\n+#define TOTAL_KDF_SHAKE 3\n \n-\n float tempo_total[256] = {0};\n-int testes_ate_agora = 0;\n+int testes_ate_agora[256] = {0};\n \n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n     testes_ate_agora ++;\n"
+                },
+                {
+                    "date": 1715277558292,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,9 +23,9 @@\n int testes_ate_agora[256] = {0};\n \n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n-    testes_ate_agora ++;\n+    testes_ate_agora[qual_total] ++;\n }\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n"
+                },
+                {
+                    "date": 1715277595844,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -23,10 +23,11 @@\n int testes_ate_agora[256] = {0};\n \n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n-    testes_ate_agora[qual_total] ++;\n+    testes_ate_agora[qual_total]++;\n }\n+\n void printar_media() {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n }\n \n"
+                },
+                {
+                    "date": 1715277616610,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,10 +26,11 @@\n     tempo_total[qual_total] += resultado;\n     testes_ate_agora[qual_total]++;\n }\n \n-void printar_media() {\n-    printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n+void printar_media(int qual_total) {\n+    printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", \n+      testes_ate_agora[qual_total], (float) tempo_total[qual_total] / testes_ate_agora);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715277621712,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,9 +28,9 @@\n }\n \n void printar_media(int qual_total) {\n     printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", \n-      testes_ate_agora[qual_total], (float) tempo_total[qual_total] / testes_ate_agora);\n+      testes_ate_agora[qual_total], (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715277907334,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,13 +13,8 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-#define TOTAL_PRF_XOTE 0\n-#define TOTAL_PRF_SHAKE 1\n-#define TOTAL_KDF_XOTE 2\n-#define TOTAL_KDF_SHAKE 3\n-\n float tempo_total[256] = {0};\n int testes_ate_agora[256] = {0};\n \n void registrar_resultado(float resultado, int qual_total) {\n@@ -143,9 +138,9 @@\n     t_after = cpucycles();\n     vec_time.t_decaps[i] = t_after - t_before;\n   }\n \n-  printar_media();\n+  printar_media(TOTAL_PRF_XOTE);\n \n   print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n     \n \n"
+                },
+                {
+                    "date": 1715277926451,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total[256] = {0};\n-int testes_ate_agora[256] = {0};\n+float tempo_total[256] = {-1};\n+int testes_ate_agora[256] = {-1};\n \n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n     testes_ate_agora[qual_total]++;\n"
+                },
+                {
+                    "date": 1715279902767,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -16,8 +16,29 @@\n \n float tempo_total[256] = {-1};\n int testes_ate_agora[256] = {-1};\n \n+char* nome_categoria(int categoria) {\n+  switch ( categoria)\n+  {\n+  case TOTAL_KDF_SHAKE:\n+    return \"TOTAL_KDF_SHAKE\";\n+    break;\n+  \n+  case TOTAL_KDF_XOTE:\n+    return \"TOTAL_KDF_XOTE\";\n+    break;\n+\n+  case TOTAL_PRF_XOTE:\n+    return \"TOTAL_PRF_XOTE\";\n+    break;\n+\n+  case TOTAL_PRF_SHAKE:\n+    return \"TOTAL_PRF_SHAKE\";\n+    break;\n+  }\n+}\n+\n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n     testes_ate_agora[qual_total]++;\n }\n"
+                },
+                {
+                    "date": 1715279940069,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,10 +43,12 @@\n     testes_ate_agora[qual_total]++;\n }\n \n void printar_media(int qual_total) {\n-    printf(\"Foram feitos um total de %d testes, média foi de %f ms\\n\", \n-      testes_ate_agora[qual_total], (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n+    printf(\"Foram feitos um total de %d testes para %s, média foi de %f ms\\n\", \n+      testes_ate_agora[qual_total], \n+      nome_categoria(qual_total),\n+      (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715280264316,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -162,8 +162,11 @@\n     vec_time.t_decaps[i] = t_after - t_before;\n   }\n \n   printar_media(TOTAL_PRF_XOTE);\n+  printar_media(TOTAL_KDF_XOTE);\n+  printar_media(TOTAL_PRF_SHAKE);\n+  printar_media(TOTAL_KDF_SHAKE);\n \n   print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n     \n \n"
+                },
+                {
+                    "date": 1715280411311,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -43,8 +43,12 @@\n     testes_ate_agora[qual_total]++;\n }\n \n void printar_media(int qual_total) {\n+  int testes = testes_ate_agora[qual_total];\n+\n+  if (testes == -1) return;\n+\n     printf(\"Foram feitos um total de %d testes para %s, média foi de %f ms\\n\", \n       testes_ate_agora[qual_total], \n       nome_categoria(qual_total),\n       (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n"
+                },
+                {
+                    "date": 1715280421833,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -47,12 +47,12 @@\n   int testes = testes_ate_agora[qual_total];\n \n   if (testes == -1) return;\n \n-    printf(\"Foram feitos um total de %d testes para %s, média foi de %f ms\\n\", \n-      testes_ate_agora[qual_total], \n-      nome_categoria(qual_total),\n-      (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n+  printf(\"Foram feitos um total de %d testes para %s, média foi de %f ms\\n\", \n+    testes_ate_agora[qual_total], \n+    nome_categoria(qual_total),\n+    (float) tempo_total[qual_total] / testes_ate_agora[qual_total]);\n }\n \n typedef uint64_t t[NTESTS];\n // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\n"
+                },
+                {
+                    "date": 1715280537270,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total[256] = {-1};\n-int testes_ate_agora[256] = {-1};\n+float tempo_total[4] = {-1, -1, -1, -1};\n+int testes_ate_agora[4] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n   switch ( categoria)\n   {\n"
+                },
+                {
+                    "date": 1715281292635,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total[4] = {-1, -1, -1, -1};\n-int testes_ate_agora[4] = {-1, -1, -1, -1};\n+float tempo_total[8] = {-1, -1, -1, -1};\n+int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n   switch ( categoria)\n   {\n"
+                },
+                {
+                    "date": 1715281978819,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,8 +34,12 @@\n \n   case TOTAL_PRF_SHAKE:\n     return \"TOTAL_PRF_SHAKE\";\n     break;\n+\n+  default:\n+    return \"NOME NAO DEFINIDO, VER TEST_SPEED.C\"\n+    break;\n   }\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282103839,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,8 +17,11 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n+  char[][] nomes_em_ordem = {\"TOTAL_KDF_SHAKE\", \"TOTAL_KDF_XOTE\"};\n+  return nomes_em_ordem[categoria];\n+  \n   switch ( categoria)\n   {\n   case TOTAL_KDF_SHAKE:\n     return \"TOTAL_KDF_SHAKE\";\n@@ -34,8 +37,10 @@\n \n   case TOTAL_PRF_SHAKE:\n     return \"TOTAL_PRF_SHAKE\";\n     break;\n+  \n+  \n \n   default:\n     return \"NOME NAO DEFINIDO, VER TEST_SPEED.C\"\n     break;\n"
+                },
+                {
+                    "date": 1715282270983,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,35 +17,23 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n-  char[][] nomes_em_ordem = {\"TOTAL_KDF_SHAKE\", \"TOTAL_KDF_XOTE\"};\n-  return nomes_em_ordem[categoria];\n-  \n-  switch ( categoria)\n-  {\n-  case TOTAL_KDF_SHAKE:\n-    return \"TOTAL_KDF_SHAKE\";\n-    break;\n-  \n-  case TOTAL_KDF_XOTE:\n-    return \"TOTAL_KDF_XOTE\";\n-    break;\n+  /*\n+  #define TOTAL_PRF_XOTE 0\n+#define TOTAL_PRF_SHAKE 1\n+#define TOTAL_KDF_XOTE 2\n+#define TOTAL_KDF_SHAKE 3\n+#define TOTAL_XOF_ABSORB_SHAKE 4\n+#define TOTAL_XOF_ABSORB_XOTE 5\n+#define TOTAL_XOF_SQUEEZE_SHAKE 6\n+#define TOTAL_XOF_SQUEEZE_XOTE 7\n+*/\n \n-  case TOTAL_PRF_XOTE:\n-    return \"TOTAL_PRF_XOTE\";\n-    break;\n+  char[][] nomes_em_ordem = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE, TOTAL_KDF_XOTE, TOTAL_KDF_SHAKE, TOTAL_XOF_ABSORB_SHAKE, TOTAL_XOF_ABSORB_XOTE, TOTAL_XOF_SQUEEZE_SHAKE, TOTAL_XOF_SQUEEZE_XOTE\"};\n \n-  case TOTAL_PRF_SHAKE:\n-    return \"TOTAL_PRF_SHAKE\";\n-    break;\n-  \n-  \n \n-  default:\n-    return \"NOME NAO DEFINIDO, VER TEST_SPEED.C\"\n-    break;\n-  }\n+  return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n     tempo_total[qual_total] += resultado;\n"
+                },
+                {
+                    "date": 1715282344716,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -28,11 +28,9 @@\n #define TOTAL_XOF_SQUEEZE_SHAKE 6\n #define TOTAL_XOF_SQUEEZE_XOTE 7\n */\n \n-  char[][] nomes_em_ordem = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE, TOTAL_KDF_XOTE, TOTAL_KDF_SHAKE, TOTAL_XOF_ABSORB_SHAKE, TOTAL_XOF_ABSORB_XOTE, TOTAL_XOF_SQUEEZE_SHAKE, TOTAL_XOF_SQUEEZE_XOTE\"};\n-\n-\n+  char nomes_em_ordem[][] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE, TOTAL_KDF_XOTE, TOTAL_KDF_SHAKE, TOTAL_XOF_ABSORB_SHAKE, TOTAL_XOF_ABSORB_XOTE, TOTAL_XOF_SQUEEZE_SHAKE, TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282360522,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,19 +17,8 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n-  /*\n-  #define TOTAL_PRF_XOTE 0\n-#define TOTAL_PRF_SHAKE 1\n-#define TOTAL_KDF_XOTE 2\n-#define TOTAL_KDF_SHAKE 3\n-#define TOTAL_XOF_ABSORB_SHAKE 4\n-#define TOTAL_XOF_ABSORB_XOTE 5\n-#define TOTAL_XOF_SQUEEZE_SHAKE 6\n-#define TOTAL_XOF_SQUEEZE_XOTE 7\n-*/\n-\n   char nomes_em_ordem[][] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE, TOTAL_KDF_XOTE, TOTAL_KDF_SHAKE, TOTAL_XOF_ABSORB_SHAKE, TOTAL_XOF_ABSORB_XOTE, TOTAL_XOF_SQUEEZE_SHAKE, TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n"
+                },
+                {
+                    "date": 1715282409247,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n-  char nomes_em_ordem[][] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE, TOTAL_KDF_XOTE, TOTAL_KDF_SHAKE, TOTAL_XOF_ABSORB_SHAKE, TOTAL_XOF_ABSORB_XOTE, TOTAL_XOF_SQUEEZE_SHAKE, TOTAL_XOF_SQUEEZE_XOTE\"};\n+  char nomes_em_ordem[][] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282426078,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n-  char nomes_em_ordem[][] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n+  char** nomes_em_ordem = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282470322,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -17,9 +17,9 @@\n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n \n char* nome_categoria(int categoria) {\n-  char** nomes_em_ordem = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n+  char nomes_em_ordem[64][64] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282505041,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -15,11 +15,11 @@\n #include \"test_speed.h\"\n \n float tempo_total[8] = {-1, -1, -1, -1};\n int testes_ate_agora[8] = {-1, -1, -1, -1};\n+char nomes_em_ordem[64][64] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n \n char* nome_categoria(int categoria) {\n-  char nomes_em_ordem[64][64] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n   return nomes_em_ordem[categoria];\n }\n \n void registrar_resultado(float resultado, int qual_total) {\n"
+                },
+                {
+                    "date": 1715282567110,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -13,10 +13,10 @@\n #include <time.h>\n #include <unistd.h>\n #include \"test_speed.h\"\n \n-float tempo_total[8] = {-1, -1, -1, -1};\n-int testes_ate_agora[8] = {-1, -1, -1, -1};\n+float tempo_total[8] = {-1, -1, -1, -1, -1, -1, -1, -1};\n+int testes_ate_agora[8] = {-1, -1, -1, -1, -1, -1, -1, -1};\n char nomes_em_ordem[64][64] = {\"TOTAL_PRF_XOTE\", \"TOTAL_PRF_SHAKE\", \"TOTAL_KDF_XOTE\", \"TOTAL_KDF_SHAKE\", \"TOTAL_XOF_ABSORB_SHAKE\", \"TOTAL_XOF_ABSORB_XOTE\", \"TOTAL_XOF_SQUEEZE_SHAKE\", \"TOTAL_XOF_SQUEEZE_XOTE\"};\n \n char* nome_categoria(int categoria) {\n   return nomes_em_ordem[categoria];\n"
+                },
+                {
+                    "date": 1715283156296,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -153,8 +153,12 @@\n   printar_media(TOTAL_PRF_XOTE);\n   printar_media(TOTAL_KDF_XOTE);\n   printar_media(TOTAL_PRF_SHAKE);\n   printar_media(TOTAL_KDF_SHAKE);\n+  printar_media(TOTAL_XOF_ABSORB_SHAKE);\n+  printar_media(TOTAL_XOF_ABSORB_XOTE);\n+  printar_media(TOTAL_XOF_SQUEEZE_SHAKE);\n+  printar_media(TOTAL_XOF_SQUEEZE_XOTE);\n \n   print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n     \n \n"
+                }
+            ],
+            "date": 1715275514828,
+            "name": "Commit-0",
+            "content": "#include <stddef.h>\n#include <stdint.h>\n#include <stdlib.h>\n#include <stdio.h>\n#include \"api.h\"\n// #include \"kex.h\"  //é um arquivo que deveria estar aqui dentro dessa pasta, para eu conseguir puxar ele dentro desse código\n#include \"params.h\"\n#include \"indcpa.h\"\n#include \"poly.h\"\n#include \"polyvec.h\"\n#include \"cpucycles.h\"\n#include \"speed_print.h\"\n#include <time.h>\n#include <unistd.h>\n#include \"testes.h\"\n\ntypedef\n\nuint64_t t[NTESTS];\n// uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];\nuint64_t t_before, t_after;\nuint8_t seed[KYBER_SYMBYTES] = {0};\nint main()\n{\n  vector_time vec_time;\n  unsigned int i;\n  unsigned char pk[CRYPTO_PUBLICKEYBYTES] = {0};\n  unsigned char sk[CRYPTO_SECRETKEYBYTES] = {0};\n  unsigned char ct[CRYPTO_CIPHERTEXTBYTES] = {0};\n  unsigned char key[CRYPTO_BYTES] = {0};\n //  unsigned char kexsenda[KEX_AKE_SENDABYTES] = {0};\n //  unsigned char kexsendb[KEX_AKE_SENDBBYTES] = {0};\n //  unsigned char kexkey[KEX_SSBYTES] = {0};\n  polyvec matrix[KYBER_K];\n  poly ap;\n\n  char * filename = (char *)calloc(64, sizeof(char));\n\n  printf(\"\\n\\n ------ Parameters ------ \\n\\n\");\n  printf(\"Using KYBER_K = %d\\n\", KYBER_K);\n  #ifdef KYBER_90S\n  printf(\"Using Kyber with AES\\n\");\n  sprintf(filename, \"results/RESULTS_AES-K%d\", KYBER_K);\n  #elif KYBER_FORRO\n  printf(\"Using Kyber with Forro\\n\");\n  sprintf(filename, \"results/RESULTS_FORRO-K%d\", KYBER_K);\n  #elif KYBER_XOTE\n  printf(\"Using Kyber with Xote\\n\");\n  sprintf(filename, \"results/RESULTS_XOTE-K%d\", KYBER_K);\n  #else\n  printf(\"Using Kyber with SHAKE\\n\");\n  sprintf(filename, \"results/RESULTS_SHAKE-K%d\", KYBER_K);\n  #endif\n  printf(\"\\n ------------------------- \\n\\n\");\n\n  // for(i=0;i<NTESTS;i++) {\n  //   // t[i] = cpucycles();\n  //   t_before = cpucycles();\n  //   gen_matrix(matrix, seed, 0);\n  //   t_after = cpucycles();\n  //   t_gen_a[i] = t_after - t_before;\n  // }\n  //   print_results_with_csv(\"gen_a: \", t, NTESTS, filename);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   poly_getnoise_eta1(&ap, seed, 0);\n  // }\n  //   print_results(\"poly_getnoise_eta1: \", t, NTESTS);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   poly_getnoise_eta2(&ap, seed, 0);\n  // }\n  //   print_results(\"poly_getnoise_eta2: \", t, NTESTS);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   poly_ntt(&ap);\n  // }\n  //   print_results(\"NTT: \", t, NTESTS);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   poly_invntt_tomont(&ap);\n  // }\n  //   print_results(\"INVNTT: \", t, NTESTS);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   crypto_kem_keypair(pk, sk);\n  // }\n  //   print_results_with_csv(\"kyber_keypair: \", t, NTESTS, filename);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   crypto_kem_enc(ct, key, pk);\n  // }\n  //   print_results_with_csv(\"kyber_encaps: \", t, NTESTS, filename);\n\n  // for(i=0;i<NTESTS;i++) {\n  //   t[i] = cpucycles();\n  //   crypto_kem_dec(key, ct, sk);\n  // }\n  //   print_results_with_csv(\"kyber_decaps: \", t, NTESTS, filename);\n\n  for(i=0;i<NTESTS;i++) {\n    // t[i] = cpucycles();\n    t_before = cpucycles();\n    gen_matrix(matrix, seed, 0);\n    t_after = cpucycles();\n    // t[i] = t_after - t_before;\n    vec_time.t_gen_a[i] = t_after - t_before;\n\n    t_before = cpucycles();\n    crypto_kem_keypair(pk, sk);\n    t_after = cpucycles();\n    vec_time.t_keypair[i] = t_after - t_before;\n\n    t_before = cpucycles();\n    crypto_kem_enc(ct, key, pk);\n    t_after = cpucycles();\n    vec_time.t_encaps[i] = t_after - t_before;\n\n    t_before = cpucycles();\n    crypto_kem_dec(key, ct, sk);\n    t_after = cpucycles();\n    vec_time.t_decaps[i] = t_after - t_before;\n  }\n\n\n\n  print_results_with_csv_str(\"gen_a: \", &vec_time, NTESTS, filename);\n    \n\n\n\n/* \n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_uake_initA(kexsenda, key, sk, pk);\n  }\n  print_results(\"kex_uake_initA: \", t, NTESTS);\n\n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_uake_sharedB(kexsendb, kexkey, kexsenda, sk);\n  }\n  print_results(\"kex_uake_sharedB: \", t, NTESTS);\n\n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_uake_sharedA(kexkey, kexsendb, key, sk);\n  }\n  print_results(\"kex_uake_sharedA: \", t, NTESTS);\n\n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_ake_initA(kexsenda, key, sk, pk);\n  }\n  print_results(\"kex_ake_initA: \", t, NTESTS);\n\n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_ake_sharedB(kexsendb, kexkey, kexsenda, sk, pk);\n  }\n  print_results(\"kex_ake_sharedB: \", t, NTESTS);\n\n  for(i=0;i<NTESTS;i++) {\n    t[i] = cpucycles();\n    kex_ake_sharedA(kexkey, kexsendb, key, sk, sk);\n  }\n  print_results(\"kex_ake_sharedA: \", t, NTESTS);\n*/\n\n  free(filename);\n  return 0;\n}\n"
+        }
+    ]
+}

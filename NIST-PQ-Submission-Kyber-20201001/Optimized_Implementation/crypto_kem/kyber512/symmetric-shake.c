@@ -3,6 +3,9 @@
 #include "params.h"
 #include "fips202.h"
 #include "symmetric.h"
+#include <stdio.h>
+#include <time.h>
+#include "test_speed.h"
 
 /*************************************************
 * Name:        kyber_shake128_absorb
@@ -21,6 +24,7 @@ void kyber_shake128_absorb(keccak_state *state,
                            uint8_t x,
                            uint8_t y)
 {
+  int inicio = clock();
   unsigned int i;
   uint8_t extseed[KYBER_SYMBYTES+2];
 
@@ -30,6 +34,9 @@ void kyber_shake128_absorb(keccak_state *state,
   extseed[i]   = y;
 
   shake128_absorb(state, extseed, sizeof(extseed));
+  int intervalo = clock() - inicio;
+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+  registrar_resultado(tempo_ms, TOTAL_XOF_ABSORB_SHAKE);
 }
 
 /*************************************************
@@ -49,6 +56,7 @@ void kyber_shake256_prf(uint8_t *out,
                         const uint8_t key[KYBER_SYMBYTES],
                         uint8_t nonce)
 {
+  int inicio = clock();
   unsigned int i;
   uint8_t extkey[KYBER_SYMBYTES+1];
 
@@ -57,4 +65,7 @@ void kyber_shake256_prf(uint8_t *out,
   extkey[i] = nonce;
 
   shake256(out, outlen, extkey, sizeof(extkey));
+  int intervalo = clock() - inicio;
+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+  registrar_resultado(tempo_ms, TOTAL_PRF_SHAKE);
 }

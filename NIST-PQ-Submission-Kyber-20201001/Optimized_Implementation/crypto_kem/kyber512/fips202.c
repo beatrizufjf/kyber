@@ -8,6 +8,8 @@
 #include <stddef.h>
 #include <stdint.h>
 #include "fips202.h"
+#include "test_speed.h"
+#include <time.h>
 
 #define NROUNDS 24
 #define ROL(a, offset) ((a << offset) ^ (a >> (64-offset)))
@@ -446,7 +448,11 @@ void shake128_absorb(keccak_state *state, const uint8_t *in, size_t inlen)
 **************************************************/
 void shake128_squeezeblocks(uint8_t *out, size_t nblocks, keccak_state *state)
 {
+  int inicio = clock();
   keccak_squeezeblocks(out, nblocks, state->s, SHAKE128_RATE);
+  int intervalo = clock() - inicio;
+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+  registrar_resultado(tempo_ms, TOTAL_XOF_SQUEEZE_SHAKE);
 }
 
 /*************************************************
@@ -523,6 +529,8 @@ void shake128(uint8_t *out, size_t outlen, const uint8_t *in, size_t inlen)
 **************************************************/
 void shake256(uint8_t *out, size_t outlen, const uint8_t *in, size_t inlen)
 {
+  int inicio = clock();
+
   unsigned int i;
   size_t nblocks = outlen/SHAKE256_RATE;
   uint8_t t[SHAKE256_RATE];
@@ -539,6 +547,10 @@ void shake256(uint8_t *out, size_t outlen, const uint8_t *in, size_t inlen)
     for(i=0;i<outlen;i++)
       out[i] = t[i];
   }
+
+  int intervalo = clock() - inicio;
+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;
+  registrar_resultado(tempo_ms, TOTAL_KDF_SHAKE);
 }
 
 /*************************************************

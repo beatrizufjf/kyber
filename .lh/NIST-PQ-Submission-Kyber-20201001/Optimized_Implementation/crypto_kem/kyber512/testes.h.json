@@ -1,0 +1,18 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/testes.h",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1715275465895,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1715275465895,
+            "name": "Commit-0",
+            "content": "float tempo_total;\nint testes_ate_agora;\n\nvoid registrar_resultado(float resultado);\nvoid printar_media();\n"
+        }
+    ]
+}

@@ -1,0 +1,22 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/testes.c",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 1,
+            "patches": [
+                {
+                    "date": 1715275435833,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715275455544,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -1,8 +1,8 @@\n #include \"speed_print.h\"\n \n-tempo_total = 0.0;\n-testes_ate_agora = 0;\n+float tempo_total = 0.0;\n+int testes_ate_agora = 0;\n \n void registrar_resultado(float resultado) {\n     tempo_total += resultado;\n     testes_ate_agora ++;\n"
+                }
+            ],
+            "date": 1715275435833,
+            "name": "Commit-0",
+            "content": "#include \"speed_print.h\"\n\ntempo_total = 0.0;\ntestes_ate_agora = 0;\n\nvoid registrar_resultado(float resultado) {\n    tempo_total += resultado;\n    testes_ate_agora ++;\n}\n\nvoid printar_media() {\n    printf(\"Foram feitos um total de %d testes, média foi de %f ms\", testes_ate_agora, (float) tempo_total / testes_ate_agora);\n}"
+        }
+    ]
+}

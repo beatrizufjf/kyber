@@ -1,0 +1,38 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/symmetric-xote.c",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 5,
+            "patches": [
+                {
+                    "date": 1715275695119,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                },
+                {
+                    "date": 1715276273355,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -3,8 +3,9 @@\n #include \"params.h\"\n #include \"forro_cipher-main/src/xote/ref/xote.h\"\n #include \"symmetric.h\"\n #include <stdio.h>\n+#include \"test_speed.h\"\n \n void kyber_xotexof_absorb(stream_ctx *state,\n                             const uint8_t seed[KYBER_SYMBYTES],\n                             uint8_t x, uint8_t y)\n"
+                },
+                {
+                    "date": 1715277794449,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -34,8 +34,8 @@\n   int intervalo = clock() - inicio;\n   float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n   soma_prf += tempo_ms;\n   cont++;\n-  registrar_resultado(tempo_ms);\n+  registrar_resultado(tempo_ms, TOTAL_PRF_XOTE);\n   //printf(\"tempo xote_PRF: %f\\n\", soma_prf/(float)cont);\n   \n }\n"
+                },
+                {
+                    "date": 1715278288890,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -26,16 +26,12 @@\n                          uint8_t nonce)\n {\n   uint8_t expnonce[12] = {0};\n   expnonce[0] = nonce;\n-  float soma_prf = 0;\n-  int cont = 0;\n-  int inicio = clock();\n+  // int inicio = clock();\n   xote_prf(out, outlen, key, expnonce);\n-  int intervalo = clock() - inicio;\n-  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n-  soma_prf += tempo_ms;\n-  cont++;\n-  registrar_resultado(tempo_ms, TOTAL_PRF_XOTE);\n+  // int intervalo = clock() - inicio;\n+  // float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n+  // registrar_resultado(tempo_ms, TOTAL_PRF_XOTE);\n   //printf(\"tempo xote_PRF: %f\\n\", soma_prf/(float)cont);\n   \n }\n"
+                },
+                {
+                    "date": 1715281893763,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -12,13 +12,16 @@\n {\n #if KYBER_SYMBYTES != 32\n #error \"Kyber-xote only supports KYBER_SYMBYTES = 32!\"\n #endif\n-\n+  int inicio = clock();\n   uint8_t expnonce[12] = {0};\n   expnonce[0] = x;\n   expnonce[1] = y;\n   xote_absorb(state, seed, expnonce);\n+  int intervalo = clock() - inicio;\n+  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n+  registrar_resultado(tempo_ms, TOTAL_KDF_XOTE);\n }\n \n void kyber_xote_prf(uint8_t *out,\n                          size_t outlen,\n"
+                },
+                {
+                    "date": 1715282622024,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n@@ -4,8 +4,9 @@\n #include \"forro_cipher-main/src/xote/ref/xote.h\"\n #include \"symmetric.h\"\n #include <stdio.h>\n #include \"test_speed.h\"\n+#include <time.h>\n \n void kyber_xotexof_absorb(stream_ctx *state,\n                             const uint8_t seed[KYBER_SYMBYTES],\n                             uint8_t x, uint8_t y)\n@@ -19,9 +20,9 @@\n   expnonce[1] = y;\n   xote_absorb(state, seed, expnonce);\n   int intervalo = clock() - inicio;\n   float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n-  registrar_resultado(tempo_ms, TOTAL_KDF_XOTE);\n+  registrar_resultado(tempo_ms, TOTAL_XOF_ABSORB_XOTE);\n }\n \n void kyber_xote_prf(uint8_t *out,\n                          size_t outlen,\n"
+                }
+            ],
+            "date": 1715275695118,
+            "name": "Commit-0",
+            "content": "#include <stddef.h>\n#include <stdint.h>\n#include \"params.h\"\n#include \"forro_cipher-main/src/xote/ref/xote.h\"\n#include \"symmetric.h\"\n#include <stdio.h>\n\nvoid kyber_xotexof_absorb(stream_ctx *state,\n                            const uint8_t seed[KYBER_SYMBYTES],\n                            uint8_t x, uint8_t y)\n{\n#if KYBER_SYMBYTES != 32\n#error \"Kyber-xote only supports KYBER_SYMBYTES = 32!\"\n#endif\n\n  uint8_t expnonce[12] = {0};\n  expnonce[0] = x;\n  expnonce[1] = y;\n  xote_absorb(state, seed, expnonce);\n}\n\nvoid kyber_xote_prf(uint8_t *out,\n                         size_t outlen,\n                         const uint8_t key[32],\n                         uint8_t nonce)\n{\n  uint8_t expnonce[12] = {0};\n  expnonce[0] = nonce;\n  float soma_prf = 0;\n  int cont = 0;\n  int inicio = clock();\n  xote_prf(out, outlen, key, expnonce);\n  int intervalo = clock() - inicio;\n  float tempo_ms = (float)intervalo/CLOCKS_PER_SEC *1000;\n  soma_prf += tempo_ms;\n  cont++;\n  registrar_resultado(tempo_ms);\n  //printf(\"tempo xote_PRF: %f\\n\", soma_prf/(float)cont);\n  \n}\n"
+        }
+    ]
+}

@@ -28,7 +28,7 @@
 #	-rm PQCgenKAT_kem
 
 
-CC = /usr/bin/gcc
+CC = /usr/local/bin/gcc
 CFLAGS += -O3 -march=native -fomit-frame-pointer
 LDFLAGS = -lcrypto
 
@@ -41,10 +41,10 @@ COMMON_HEADERS = $(wildcard $(SRC_DIR)/*.h)
 
 # Arquivo de teste
 SOURCES= cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c PQCgenKAT_kem.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
-HEADERS= api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h aes256ctr.h sha2.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.c
+HEADERS= test_speed.h api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h aes256ctr.h sha2.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.c
 
 TEST_SOURCE = cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c test_speed.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c speed_print.c cpucycles.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
-TEST_HEADER = api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.h
+TEST_HEADER = test_speed.h api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.h
 
 # Executável de teste
 TEST_SPEED = test_speed
