@@ -1,0 +1,18 @@
+{
+    "sourceFile": "NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/run_results.sh",
+    "activeCommit": 0,
+    "commits": [
+        {
+            "activePatchIndex": 0,
+            "patches": [
+                {
+                    "date": 1715520412296,
+                    "content": "Index: \n===================================================================\n--- \n+++ \n"
+                }
+            ],
+            "date": 1715520412296,
+            "name": "Commit-0",
+            "content": "#!/bin/bash\n\n# Define the number of times to run the ./test_speed command\nN=100\n\n# Create the \"results\" folder if it doesn't exist\nif [ ! -d \"results\" ]; then\n    echo \"Creating 'results' folder\"\n    mkdir results\nfi\n\n# Remove all files from the \"results\" folder\necho \"Removing all files from the 'results' folder\"\nrm -f results/*\n\n# Define possible values for SEC_K and IMPLEMENTATION\nSEC_K_VALUES=(2 3 4)\nIMPLEMENTATION_VALUES=(\"AES\" \"FORRO\" \"SHAKE\" \"XOTE\")\n\n# Loop through all combinations of SEC_K and IMPLEMENTATION\nfor SEC_K in \"${SEC_K_VALUES[@]}\"; do\n    for IMPLEMENTATION in \"${IMPLEMENTATION_VALUES[@]}\"; do\n        echo \"Removing previous test_speed file\"\n        rm test_speed\n\n        echo \"Running make test_speed with SEC_K=$SEC_K and IMPLEMENTATION=$IMPLEMENTATION\"\n        make test_speed SEC_K=$SEC_K IMPLEMENTATION=$IMPLEMENTATION\n\n        # Run the ./test_speed command N times\n        for ((i=1; i<=N; i++)); do\n            echo \"Running ./test_speed (iteration $i/$N)\"\n            nice -n -20 ./test_speed\n        done\n\n        echo \"------------------\"\n    done\ndone\n"
+        }
+    ]
+}
