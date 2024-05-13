@@ -14,7 +14,10 @@ print_algs = ['SHAKE', 'FORRO', 'XOTE']
 list_count = list(range(1, len(print_algs)+1))
 print(list_count)
 
-for func in ['xof_absorb', 'xof_squeeze', 'prf', 'kdf', 'gen_a', 'keypair', 'encaps', 'decaps']:
+funcs = ['xof_absorb', 'xof_squeeze', 'prf', 'kdf', 'gen_a', 'keypair', 'encaps', 'decaps']
+primitive_funcs = ['xof_absorb', 'xof_squeeze', 'prf', 'kdf']
+
+for func in funcs:
     # print(f'Plotting k = {k}')
     fig, axs = plt.subplots(nrows=1, ncols=3, sharex=False, figsize=(15, 4))
     for i,k in enumerate([2, 3, 4]):
@@ -22,7 +25,10 @@ for func in ['xof_absorb', 'xof_squeeze', 'prf', 'kdf', 'gen_a', 'keypair', 'enc
         
         for cur_alg in all_algs:
             if(cur_alg in print_algs):
-                df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
+                if(func in primitive_funcs):
+                    df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_PRIMITIVES_' + cur_alg + '-K' + str(k) + '.csv')
+                else:
+                    df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
                 plot_list.append(df[func])
                 print(f"Median of {cur_alg}-K{k}-{func}: {df[func].median()}")
 
@@ -50,3 +56,4 @@ for func in ['xof_absorb', 'xof_squeeze', 'prf', 'kdf', 'gen_a', 'keypair', 'enc
     # fig.suptitle(func)
     fig.savefig(folderpath + func + '.' + figures_format, format=figures_format)
     # plt.show()
+    
