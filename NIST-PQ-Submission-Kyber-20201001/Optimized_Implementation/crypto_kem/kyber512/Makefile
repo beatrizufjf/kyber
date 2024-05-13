@@ -46,8 +46,13 @@ HEADERS= api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h
 TEST_SOURCE = cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c test_speed.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c speed_print.c cpucycles.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
 TEST_HEADER = api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.h
 
+TEST_PRIMITIVES_SOURCE = cbd.c fips202.c indcpa.c kem.c ntt.c poly.c polyvec.c test_speed_primitives.c reduce.c rng.c verify.c symmetric-shake.c sha256.c sha512.c aes256ctr.c symmetric-aes.c speed_print.c cpucycles.c symmetric-forro.c symmetric-xote.c forro_cipher-main/src/forro/ref/forro.c forro_cipher-main/src/xote/ref/xote.c
+TEST_PRIMITIVES_HEADER = api.h cbd.h fips202.h indcpa.h ntt.h params.h poly.h polyvec.h reduce.h rng.h verify.h symmetric.h kem.h aes256ctr.h sha2.h speed_print.h cpucycles.h forro_cipher-main/src/forro/ref/forro.h forro_cipher-main/src/xote/ref/xote.h
+
+
 # Executável de teste
 TEST_SPEED = test_speed
+TEST_SPEED_PRIMITIVES = test_speed_primitives
 
 # Flags para cada implementação
 SHAKE_FLAGS = -DKYBER_SHAKE
@@ -95,7 +100,13 @@ test_speed: $(TEST_SPEED)
 $(TEST_SPEED): $(COMMON_SOURCES) $(COMMON_HEADERS) $(TEST_SOURCE) $(TEST_HEADER)
 	$(CC) $(CFLAGS) -o $@ $(COMMON_SOURCES) $(TEST_SOURCE) $(LDFLAGS)
 
+test_speed_primitives: $(TEST_SPEED_PRIMITIVES)
+
+$(TEST_SPEED_PRIMITIVES): $(COMMON_SOURCES) $(COMMON_HEADERS) $(TEST_PRIMITIVES_SOURCE) $(TEST_PRIMITIVES_HEADER)
+	$(CC) $(CFLAGS) -o $@ $(COMMON_SOURCES) $(TEST_PRIMITIVES_SOURCE) $(LDFLAGS)
+
 # Regra de limpeza
 clean:
 	-rm -f $(TEST_SPEED)
+	-rm -f $(TEST_SPEED_PRIMITIVES)
 	-rm -f PQCgenKAT_kem
