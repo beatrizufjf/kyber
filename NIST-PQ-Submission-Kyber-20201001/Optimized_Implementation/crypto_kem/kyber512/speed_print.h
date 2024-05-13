@@ -4,7 +4,7 @@
 #include <stddef.h>
 #include <stdint.h>
 
-#define NTESTS 1000
+#define NTESTS 10001
 typedef struct vector_time_str {
     uint64_t t_gen_a[NTESTS];
     uint64_t t_keypair[NTESTS];

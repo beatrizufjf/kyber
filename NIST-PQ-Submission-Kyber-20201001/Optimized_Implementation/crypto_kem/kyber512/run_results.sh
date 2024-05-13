@@ -1,7 +1,7 @@
 #!/bin/bash
 
 # Define the number of times to run the ./test_speed command
-N=100
+N=101
 
 # Create the "results" folder if it doesn't exist
 if [ ! -d "results" ]; then
@@ -30,7 +30,7 @@ for SEC_K in "${SEC_K_VALUES[@]}"; do
         # Run the ./test_speed command N times
         for ((i=1; i<=N; i++)); do
             echo "Running ./test_speed (iteration $i/$N)"
-            nice -n -20 ./test_speed
+            sudo nice -n -20 ./test_speed
         done
 
         echo "------------------"
@@ -49,7 +49,7 @@ for SEC_K in "${SEC_K_VALUES[@]}"; do
         # Run the ./test_speed command N times
         for ((i=1; i<=N; i++)); do
             echo "Running ./test_speed_primitives (iteration $i/$N)"
-            nice -n -20 ./test_speed_primitives
+            sudo nice -n -20 ./test_speed_primitives
         done
 
         echo "------------------"

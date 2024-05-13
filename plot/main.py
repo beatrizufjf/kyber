@@ -5,8 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 
-folderpath = "figures_mac_docker_intel/"
-csvpath = "../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results_mac_docker_intel/"
+folderpath = "figures/"
+csvpath = "../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/"
 figures_format = "png"
 # figures_format = "eps"
 
