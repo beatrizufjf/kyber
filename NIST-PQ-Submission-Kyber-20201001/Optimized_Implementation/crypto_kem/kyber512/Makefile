@@ -28,7 +28,7 @@
 #	-rm PQCgenKAT_kem
 
 
-CC = /usr/bin/gcc
+CC = /usr/local/bin/gcc
 CFLAGS += -O3 -march=native -fomit-frame-pointer
 LDFLAGS = -lcrypto
 

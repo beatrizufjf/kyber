@@ -5,7 +5,8 @@ import matplotlib.pyplot as plt
 import seaborn as sns
 import time
 
-folderpath = "figures/"
+folderpath = "figures_mac_docker_intel/"
+csvpath = "../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results_mac_docker_intel/"
 figures_format = "png"
 # figures_format = "eps"
 
@@ -26,9 +27,9 @@ for func in funcs:
         for cur_alg in all_algs:
             if(cur_alg in print_algs):
                 if(func in primitive_funcs):
-                    df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_PRIMITIVES_' + cur_alg + '-K' + str(k) + '.csv')
+                    df = pd.read_csv(csvpath + 'RESULTS_PRIMITIVES_' + cur_alg + '-K' + str(k) + '.csv')
                 else:
-                    df = pd.read_csv('../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results/RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
+                    df = pd.read_csv(csvpath + 'RESULTS_' + cur_alg + '-K' + str(k) + '.csv')
                 plot_list.append(df[func])
                 print(f"Median of {cur_alg}-K{k}-{func}: {df[func].median()}")
 
