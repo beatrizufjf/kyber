@@ -6,10 +6,6 @@
 
 #define NTESTS 1000
 typedef struct vector_time_str {
-    uint64_t t_xof_absorb[NTESTS];
-    uint64_t t_xof_squeeze[NTESTS];
-    uint64_t t_prf[NTESTS];
-    uint64_t t_kdf[NTESTS];
     uint64_t t_gen_a[NTESTS];
     uint64_t t_keypair[NTESTS];
     uint64_t t_encaps[NTESTS];

@@ -10,20 +10,15 @@
 #include "polyvec.h"
 #include "cpucycles.h"
 #include "speed_print.h"
-#include "symmetric.h"
 #include <time.h>
 #include <unistd.h>
-#include <sys/random.h>
-
-#define GEN_MATRIX_NBLOCKS ((12*KYBER_N/8*(1 << 12)/KYBER_Q \
-                             + XOF_BLOCKBYTES)/XOF_BLOCKBYTES)
 
 typedef
 
 uint64_t t[NTESTS];
 // uint64_t t_gen_a[NTESTS], t_keypair[NTESTS];
 uint64_t t_before, t_after;
-// uint8_t seed[KYBER_SYMBYTES] = {0};
+uint8_t seed[KYBER_SYMBYTES] = {0};
 int main()
 {
   vector_time vec_time;
@@ -32,14 +27,6 @@ int main()
   unsigned char sk[CRYPTO_SECRETKEYBYTES] = {0};
   unsigned char ct[CRYPTO_CIPHERTEXTBYTES] = {0};
   unsigned char key[CRYPTO_BYTES] = {0};
-  xof_state state = { 0x0 };
-  unsigned int idx_i, idx_j;
-  uint8_t buf_xof[GEN_MATRIX_NBLOCKS*XOF_BLOCKBYTES+2] = { 0x0 };
-  uint8_t buf[KYBER_ETA1 * KYBER_N / 4];
-  size_t size_buf = sizeof(buf);
-  uint8_t seed[KYBER_SYMBYTES];
-  uint8_t nonce;
-  unsigned char kr[2*KYBER_SYMBYTES] = {0};
  //  unsigned char kexsenda[KEX_AKE_SENDABYTES] = {0};
  //  unsigned char kexsendb[KEX_AKE_SENDBBYTES] = {0};
  //  unsigned char kexkey[KEX_SSBYTES] = {0};
@@ -116,39 +103,13 @@ int main()
   // }
   //   print_results_with_csv("kyber_decaps: ", t, NTESTS, filename);
 
+
   for(i=0;i<NTESTS;i++) {
-
-    getrandom(seed, KYBER_SYMBYTES, 0);
-    getrandom(&idx_i, 4, 0);
-    getrandom(&idx_j, 4, 0);
-    idx_i = idx_i % KYBER_K;
-    idx_j = idx_j % KYBER_K;
-    t_before = cpucycles();
-    xof_absorb(&state, seed, idx_i, idx_j);
-    t_after = cpucycles();
-    vec_time.t_xof_absorb[i] = t_after - t_before;
-
-    t_before = cpucycles();
-    xof_squeezeblocks(buf_xof, GEN_MATRIX_NBLOCKS, &state);
-    t_after = cpucycles();
-    vec_time.t_xof_squeeze[i] = t_after - t_before;
-
-    getrandom(seed, KYBER_SYMBYTES, 0);
-    getrandom(&nonce, 1, 0);
-    t_before = cpucycles();
-    prf(buf, size_buf, seed, nonce);
-    t_after = cpucycles();
-    vec_time.t_prf[i] = t_after - t_before;
-
-    getrandom(kr, 2*KYBER_SYMBYTES, 0);
-    t_before = cpucycles();
-    kdf(key, kr, 2*KYBER_SYMBYTES);
-    t_after = cpucycles();
-    vec_time.t_kdf[i] = t_after - t_before;
-
+    // t[i] = cpucycles();
     t_before = cpucycles();
     gen_matrix(matrix, seed, 0);
     t_after = cpucycles();
+    // t[i] = t_after - t_before;
     vec_time.t_gen_a[i] = t_after - t_before;
 
     t_before = cpucycles();
