@@ -30,7 +30,7 @@ for SEC_K in "${SEC_K_VALUES[@]}"; do
         # Run the ./test_speed command N times
         for ((i=1; i<=N; i++)); do
             echo "Running ./test_speed (iteration $i/$N)"
-            sudo nice -n -20 ./test_speed
+            nice -n -20 ./test_speed
         done
 
         echo "------------------"
@@ -49,7 +49,7 @@ for SEC_K in "${SEC_K_VALUES[@]}"; do
         # Run the ./test_speed command N times
         for ((i=1; i<=N; i++)); do
             echo "Running ./test_speed_primitives (iteration $i/$N)"
-            sudo nice -n -20 ./test_speed_primitives
+            nice -n -20 ./test_speed_primitives
         done
 
         echo "------------------"
