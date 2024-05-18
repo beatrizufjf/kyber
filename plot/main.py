@@ -7,8 +7,8 @@ import time
 
 folderpath = "figures_linux_xeon/"
 csvpath = "../NIST-PQ-Submission-Kyber-20201001/Optimized_Implementation/crypto_kem/kyber512/results_linux_xeon/"
-figures_format = "png"
-# figures_format = "eps"
+# figures_format = "png"
+figures_format = "eps"
 
 all_algs = ['AES', 'SHAKE', 'FORRO', 'XOTE']
 print_algs = ['SHAKE', 'FORRO', 'XOTE']
