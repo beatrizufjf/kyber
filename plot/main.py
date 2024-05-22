@@ -20,6 +20,7 @@ primitive_funcs = ['xof_absorb', 'xof_squeeze', 'prf', 'kdf']
 
 for func in funcs:
     # print(f'Plotting k = {k}')
+    plt.rcParams["font.family"] = "Times New Roman"
     fig, axs = plt.subplots(nrows=1, ncols=3, sharex=False, figsize=(15, 4))
     for i,k in enumerate([2, 3, 4]):
         plot_list = []
@@ -36,7 +37,7 @@ for func in funcs:
         # plt.figure(figsize =(11, 6))
         bplots = axs[i].boxplot(plot_list, vert = 1, patch_artist = False, labels=print_algs, widths = .5)
         # Adicionando Título ao gráfico
-        axs[i].set_title("K: " + str(k), loc="center", fontsize=18)
+        axs[i].set_title("ML-KEM-" + str(k*256), loc="center", fontsize=18)
         # plt.xticks(list_count, print_algs)
         # axs[i].yticks(fontsize=18)
         # axs[0].xlabel("Algorithm")
@@ -47,7 +48,7 @@ for func in funcs:
         axs[i].tick_params(axis='both', which='major', labelsize=18)
         axs[i].ticklabel_format(style='sci', axis='y', scilimits=(0,0), useMathText=True)
 
-    axs[0].set_ylabel("Cycles/ticks", fontsize=18)
+    axs[0].set_ylabel("Cycles", fontsize=18)
     # for ax in axs.flat:
     #     ax.set(xlabel='x-label', ylabel='y-label')
         
